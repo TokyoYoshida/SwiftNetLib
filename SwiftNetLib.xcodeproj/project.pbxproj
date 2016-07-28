@@ -1,0 +1,313 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1E2CCF9F1D48E7E7001EEA2D /* PosixThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */; };
+		1E2CCFA11D48F229001EEA2D /* PosixMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2CCFA01D48F229001EEA2D /* PosixMutex.swift */; };
+		1E2CCFA41D48F2A9001EEA2D /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2CCFA31D48F2A9001EEA2D /* Common.swift */; };
+		1E35DCDE1D4A3060008FFE4F /* ExampleOfWebServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E35DCDD1D4A3060008FFE4F /* ExampleOfWebServer.swift */; };
+		1E35DCE01D4A30A6008FFE4F /* ExampleOfTcp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E35DCDF1D4A30A6008FFE4F /* ExampleOfTcp.swift */; };
+		1E5058DE1D28E4D60001E726 /* EchoServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E5058DD1D28E4D60001E726 /* EchoServer.swift */; };
+		1E54C2831D33E59F0042448F /* TcpClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54C2821D33E59F0042448F /* TcpClient.swift */; };
+		1E54C2851D33EE840042448F /* TcpServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E54C2841D33EE840042448F /* TcpServer.swift */; };
+		1E73CB6D1D2BEE5D00477236 /* ThreadTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E73CB6C1D2BEE5D00477236 /* ThreadTest.swift */; };
+		1E79F14A1D47C3B700DD8B33 /* PosixSemaphore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E79F1491D47C3B700DD8B33 /* PosixSemaphore.swift */; };
+		1E9D84AB1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9D84AA1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift */; };
+		1EC829061D36746500916973 /* HttpServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC829051D36746500916973 /* HttpServer.swift */; };
+		1EE887501D37D5FA003C8915 /* HttpResuestParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE8874F1D37D5FA003C8915 /* HttpResuestParser.swift */; };
+		1EE887541D37D656003C8915 /* TcpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887531D37D656003C8915 /* TcpData.swift */; };
+		1EE887561D37DED6003C8915 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887551D37DED6003C8915 /* Result.swift */; };
+		1EE887581D37E1A5003C8915 /* HttpResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887571D37E1A5003C8915 /* HttpResponseSerializer.swift */; };
+		1EE8875A1D37E1E9003C8915 /* TcpStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887591D37E1E9003C8915 /* TcpStream.swift */; };
+		__src_cc_ref_Sources/echoclient.swift /* EchoClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/echoclient.swift /* EchoClient.swift */; };
+		__src_cc_ref_Sources/main.swift /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/main.swift /* main.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixThread.swift; sourceTree = "<group>"; };
+		1E2CCFA01D48F229001EEA2D /* PosixMutex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixMutex.swift; sourceTree = "<group>"; };
+		1E2CCFA31D48F2A9001EEA2D /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		1E35DCDD1D4A3060008FFE4F /* ExampleOfWebServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfWebServer.swift; sourceTree = "<group>"; };
+		1E35DCDF1D4A30A6008FFE4F /* ExampleOfTcp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfTcp.swift; sourceTree = "<group>"; };
+		1E5058DD1D28E4D60001E726 /* EchoServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EchoServer.swift; sourceTree = "<group>"; };
+		1E54C2821D33E59F0042448F /* TcpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpClient.swift; sourceTree = "<group>"; };
+		1E54C2841D33EE840042448F /* TcpServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpServer.swift; sourceTree = "<group>"; };
+		1E73CB6C1D2BEE5D00477236 /* ThreadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadTest.swift; sourceTree = "<group>"; };
+		1E73CB721D2BFB3000477236 /* Thread */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Thread; sourceTree = "<group>"; };
+		1E79F1491D47C3B700DD8B33 /* PosixSemaphore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixSemaphore.swift; sourceTree = "<group>"; };
+		1E9D84AA1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfThreadLib.swift; sourceTree = "<group>"; };
+		1EC829051D36746500916973 /* HttpServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpServer.swift; sourceTree = "<group>"; };
+		1EE8874F1D37D5FA003C8915 /* HttpResuestParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpResuestParser.swift; sourceTree = "<group>"; };
+		1EE887531D37D656003C8915 /* TcpData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpData.swift; sourceTree = "<group>"; };
+		1EE887551D37DED6003C8915 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
+		1EE887571D37E1A5003C8915 /* HttpResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpResponseSerializer.swift; sourceTree = "<group>"; };
+		1EE887591D37E1E9003C8915 /* TcpStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpStream.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/echoclient.swift /* EchoClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoClient.swift; sourceTree = "<group>"; };
+		__PBXFileRef_Sources/main.swift /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		__PBXFileRef_SwiftNetLib.xcodeproj/Configs/Project.xcconfig /* Project.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Project.xcconfig; path = SwiftNetLib.xcodeproj/Configs/Project.xcconfig; sourceTree = "<group>"; };
+		"_____Product_SwiftNetLib" /* SwiftNetLib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = SwiftNetLib; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		"___LinkPhase_SwiftNetLib" /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1E2CCFA21D48F278001EEA2D /* Examples */ = {
+			isa = PBXGroup;
+			children = (
+				1E9D84AA1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift */,
+				1E35DCDF1D4A30A6008FFE4F /* ExampleOfTcp.swift */,
+				1E35DCDD1D4A3060008FFE4F /* ExampleOfWebServer.swift */,
+			);
+			name = Examples;
+			sourceTree = "<group>";
+		};
+		1E54C2811D33E5690042448F /* TcpLib */ = {
+			isa = PBXGroup;
+			children = (
+				1EE887531D37D656003C8915 /* TcpData.swift */,
+				1E54C2821D33E59F0042448F /* TcpClient.swift */,
+				1E54C2841D33EE840042448F /* TcpServer.swift */,
+			);
+			name = TcpLib;
+			sourceTree = "<group>";
+		};
+		1E73CB6E1D2BEE7200477236 /* SocketTest */ = {
+			isa = PBXGroup;
+			children = (
+				__PBXFileRef_Sources/echoclient.swift /* EchoClient.swift */,
+				1E5058DD1D28E4D60001E726 /* EchoServer.swift */,
+			);
+			name = SocketTest;
+			sourceTree = "<group>";
+		};
+		1E73CB6F1D2BEE8400477236 /* ThreadTest */ = {
+			isa = PBXGroup;
+			children = (
+				1E73CB6C1D2BEE5D00477236 /* ThreadTest.swift */,
+			);
+			name = ThreadTest;
+			sourceTree = "<group>";
+		};
+		1E9D84A91D2F6C4100C5AA35 /* ThreadLib */ = {
+			isa = PBXGroup;
+			children = (
+				1E2CCFA31D48F2A9001EEA2D /* Common.swift */,
+				1E2CCFA01D48F229001EEA2D /* PosixMutex.swift */,
+				1E79F1491D47C3B700DD8B33 /* PosixSemaphore.swift */,
+				1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */,
+			);
+			name = ThreadLib;
+			sourceTree = "<group>";
+		};
+		1EC829041D36744B00916973 /* OtherLib */ = {
+			isa = PBXGroup;
+			children = (
+				1EC829051D36746500916973 /* HttpServer.swift */,
+				1EE8874F1D37D5FA003C8915 /* HttpResuestParser.swift */,
+				1EE887571D37E1A5003C8915 /* HttpResponseSerializer.swift */,
+				1EE887591D37E1E9003C8915 /* TcpStream.swift */,
+				1EE887551D37DED6003C8915 /* Result.swift */,
+			);
+			name = OtherLib;
+			sourceTree = "<group>";
+		};
+		"___RootGroup_" = {
+			isa = PBXGroup;
+			children = (
+				__PBXFileRef_Package.swift /* Package.swift */,
+				1E73CB721D2BFB3000477236 /* Thread */,
+				"_____Configs_" /* Configs */,
+				"_____Sources_" /* Sources */,
+				"____Products_" /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		"____Products_" /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				"_____Product_SwiftNetLib" /* SwiftNetLib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		"_____Configs_" /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				__PBXFileRef_SwiftNetLib.xcodeproj/Configs/Project.xcconfig /* Project.xcconfig */,
+			);
+			name = Configs;
+			sourceTree = "<group>";
+		};
+		"_____Sources_" /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				"_______Group_SwiftNetLib" /* SwiftNetLib */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		"_______Group_SwiftNetLib" /* SwiftNetLib */ = {
+			isa = PBXGroup;
+			children = (
+				1EC829041D36744B00916973 /* OtherLib */,
+				1E54C2811D33E5690042448F /* TcpLib */,
+				1E9D84A91D2F6C4100C5AA35 /* ThreadLib */,
+				1E73CB6F1D2BEE8400477236 /* ThreadTest */,
+				1E73CB6E1D2BEE7200477236 /* SocketTest */,
+				1E2CCFA21D48F278001EEA2D /* Examples */,
+				__PBXFileRef_Sources/main.swift /* main.swift */,
+			);
+			name = SwiftNetLib;
+			path = Sources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		"______Target_SwiftNetLib" /* SwiftNetLib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = "_______Confs_SwiftNetLib" /* Build configuration list for PBXNativeTarget "SwiftNetLib" */;
+			buildPhases = (
+				CompilePhase_SwiftNetLib /* Sources */,
+				"___LinkPhase_SwiftNetLib" /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SwiftNetLib;
+			productName = SwiftNetLib;
+			productReference = "_____Product_SwiftNetLib" /* SwiftNetLib */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		__RootObject_ /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 9999;
+			};
+			buildConfigurationList = "___RootConfs_" /* Build configuration list for PBXProject "SwiftNetLib" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = "___RootGroup_";
+			productRefGroup = "____Products_" /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				"______Target_SwiftNetLib" /* SwiftNetLib */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		CompilePhase_SwiftNetLib /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 0;
+			files = (
+				1E5058DE1D28E4D60001E726 /* EchoServer.swift in Sources */,
+				1EE887561D37DED6003C8915 /* Result.swift in Sources */,
+				__src_cc_ref_Sources/echoclient.swift /* EchoClient.swift in Sources */,
+				1E2CCF9F1D48E7E7001EEA2D /* PosixThread.swift in Sources */,
+				__src_cc_ref_Sources/main.swift /* main.swift in Sources */,
+				1E35DCE01D4A30A6008FFE4F /* ExampleOfTcp.swift in Sources */,
+				1EE887581D37E1A5003C8915 /* HttpResponseSerializer.swift in Sources */,
+				1E54C2831D33E59F0042448F /* TcpClient.swift in Sources */,
+				1E79F14A1D47C3B700DD8B33 /* PosixSemaphore.swift in Sources */,
+				1E54C2851D33EE840042448F /* TcpServer.swift in Sources */,
+				1EE887541D37D656003C8915 /* TcpData.swift in Sources */,
+				1EC829061D36746500916973 /* HttpServer.swift in Sources */,
+				1E35DCDE1D4A3060008FFE4F /* ExampleOfWebServer.swift in Sources */,
+				1EE8875A1D37E1E9003C8915 /* TcpStream.swift in Sources */,
+				1E2CCFA11D48F229001EEA2D /* PosixMutex.swift in Sources */,
+				1E73CB6D1D2BEE5D00477236 /* ThreadTest.swift in Sources */,
+				1E2CCFA41D48F2A9001EEA2D /* Common.swift in Sources */,
+				1E9D84AB1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift in Sources */,
+				1EE887501D37D5FA003C8915 /* HttpResuestParser.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		_ReleaseConf_SwiftNetLib /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
+				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
+			};
+			name = Release;
+		};
+		"___DebugConf_SwiftNetLib" /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				LD_RUNPATH_SEARCH_PATHS = "$(TOOLCHAIN_DIR)/usr/lib/swift/macosx @executable_path";
+				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_SWIFT_FLAGS = "$(inherited)";
+				SWIFT_FORCE_DYNAMIC_LINK_STDLIB = YES;
+				SWIFT_FORCE_STATIC_LINK_STDLIB = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		"_____Release_" /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = __PBXFileRef_SwiftNetLib.xcodeproj/Configs/Project.xcconfig /* Project.xcconfig */;
+			buildSettings = {
+			};
+			name = Release;
+		};
+		"_______Debug_" /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = __PBXFileRef_SwiftNetLib.xcodeproj/Configs/Project.xcconfig /* Project.xcconfig */;
+			buildSettings = {
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		"___RootConfs_" /* Build configuration list for PBXProject "SwiftNetLib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				"_______Debug_" /* Debug */,
+				"_____Release_" /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		"_______Confs_SwiftNetLib" /* Build configuration list for PBXNativeTarget "SwiftNetLib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				"___DebugConf_SwiftNetLib" /* Debug */,
+				_ReleaseConf_SwiftNetLib /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = __RootObject_ /* Project object */;
+}
