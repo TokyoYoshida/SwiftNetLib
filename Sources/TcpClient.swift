@@ -7,7 +7,8 @@
 import C7
 
 public class TcpClient {
-    var socketfd: Int32
+    private  var socketfd: Int32
+    internal var closed:   Bool    = true // TODO avoid state management
 
     static let DEFAULT_HOST        = "127.0.0.1"
     static let DEFAULT_PORT:UInt16 = 5188
@@ -19,6 +20,7 @@ public class TcpClient {
 
     init(socketfd: Int32){
         self.socketfd = socketfd
+        closed = false
     }
     
     private init(host: String, port: UInt16) throws {
@@ -38,6 +40,9 @@ public class TcpClient {
         if (ret < 0) {
             throw Error.errno(errorNo: errno)
         }
+ 
+        print("client open")
+        closed = false
     }
 
     public class func tcpOpen(host: String = DEFAULT_HOST, port: UInt16 = DEFAULT_PORT) throws -> TcpClient {
@@ -48,9 +53,9 @@ public class TcpClient {
     public func tcpRead() throws -> TcpData? {
         let recvbuf = TcpData()
         let size = read(self.socketfd, recvbuf.pointer ,recvbuf.lenBytes)
-        print("\(size) bytes read")
         
         guard size != -1 else {
+            print(errno)
             throw Error.errno(errorNo: errno)
         }
 
@@ -72,6 +77,9 @@ public class TcpClient {
     }
 
     public func tcpWrite(sendbuf: Data) throws -> Int {
+        guard sendbuf.bytes.count != 0 else {
+            return 0
+        }
         let size = write(socketfd, UnsafeMutablePointer(sendbuf.bytes), sendbuf.bytes.count * sizeofValue(sendbuf.bytes[0]))
         
         guard size != -1 else {
@@ -85,5 +93,6 @@ public class TcpClient {
         guard close(socketfd) != -1 else {
             throw Error.errno(errorNo: errno)
         }
+        closed = true
     }
 }

@@ -18,6 +18,8 @@
 		1E73CB6D1D2BEE5D00477236 /* ThreadTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E73CB6C1D2BEE5D00477236 /* ThreadTest.swift */; };
 		1E79F14A1D47C3B700DD8B33 /* PosixSemaphore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E79F1491D47C3B700DD8B33 /* PosixSemaphore.swift */; };
 		1E9D84AB1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9D84AA1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift */; };
+		1E9FDE0F1DFCE47E0089C532 /* PosixCond.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9FDE0E1DFCE47E0089C532 /* PosixCond.swift */; };
+		1E9FDE111DFCE6860089C532 /* AsyncQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9FDE101DFCE6860089C532 /* AsyncQueue.swift */; };
 		1EC829061D36746500916973 /* HttpServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC829051D36746500916973 /* HttpServer.swift */; };
 		1EE887501D37D5FA003C8915 /* HttpResuestParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE8874F1D37D5FA003C8915 /* HttpResuestParser.swift */; };
 		1EE887541D37D656003C8915 /* TcpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887531D37D656003C8915 /* TcpData.swift */; };
@@ -41,6 +43,8 @@
 		1E73CB721D2BFB3000477236 /* Thread */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Thread; sourceTree = "<group>"; };
 		1E79F1491D47C3B700DD8B33 /* PosixSemaphore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixSemaphore.swift; sourceTree = "<group>"; };
 		1E9D84AA1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfThreadLib.swift; sourceTree = "<group>"; };
+		1E9FDE0E1DFCE47E0089C532 /* PosixCond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixCond.swift; sourceTree = "<group>"; };
+		1E9FDE101DFCE6860089C532 /* AsyncQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncQueue.swift; sourceTree = "<group>"; };
 		1EC829051D36746500916973 /* HttpServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpServer.swift; sourceTree = "<group>"; };
 		1EE8874F1D37D5FA003C8915 /* HttpResuestParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpResuestParser.swift; sourceTree = "<group>"; };
 		1EE887531D37D656003C8915 /* TcpData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpData.swift; sourceTree = "<group>"; };
@@ -109,6 +113,8 @@
 				1E2CCFA01D48F229001EEA2D /* PosixMutex.swift */,
 				1E79F1491D47C3B700DD8B33 /* PosixSemaphore.swift */,
 				1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */,
+				1E9FDE0E1DFCE47E0089C532 /* PosixCond.swift */,
+				1E9FDE101DFCE6860089C532 /* AsyncQueue.swift */,
 			);
 			name = ThreadLib;
 			sourceTree = "<group>";
@@ -233,6 +239,8 @@
 				1EE887581D37E1A5003C8915 /* HttpResponseSerializer.swift in Sources */,
 				1E54C2831D33E59F0042448F /* TcpClient.swift in Sources */,
 				1E79F14A1D47C3B700DD8B33 /* PosixSemaphore.swift in Sources */,
+				1E9FDE111DFCE6860089C532 /* AsyncQueue.swift in Sources */,
+				1E9FDE0F1DFCE47E0089C532 /* PosixCond.swift in Sources */,
 				1E54C2851D33EE840042448F /* TcpServer.swift in Sources */,
 				1EE887541D37D656003C8915 /* TcpData.swift in Sources */,
 				1EC829061D36746500916973 /* HttpServer.swift in Sources */,

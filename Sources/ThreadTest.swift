@@ -62,7 +62,7 @@ struct Thdata {
  ATTENTION   :
 
  *****************************************************************************/
-let thread_function: @convention(c)(UnsafeMutablePointer<Void>!) -> UnsafeMutablePointer<Void>! = { thdata in
+let thread_function: @convention(c)(UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<Void>? = { thdata in
     var priv = UnsafeMutablePointer<Thdata>(thdata)!.pointee
 
 //    /* sync */
@@ -152,7 +152,7 @@ func thread() -> Int32
 //    /* join */
     i = 0
     hello.characters.forEach { _ in
-        pthread_join(thdat[i].th, nil)
+        pthread_join(thdat[i].th!, nil)
         sem_close(thdat[i].sync)
         sem_close(thdat[i].start)
         i += 1
