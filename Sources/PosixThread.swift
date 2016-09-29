@@ -4,7 +4,7 @@
     import Glibc
     #endif
 
-typealias PosixThreadFunc = @convention(c)(UnsafeMutablePointer<Void>!) -> UnsafeMutablePointer<Void>!
+typealias PosixThreadFunc = @convention(c)(UnsafeMutablePointer<Void>) -> UnsafeMutablePointer<Void>?
 
 public  typealias SwiftThreadFunc = () -> Void
 
@@ -20,7 +20,7 @@ public class ThreadUnit  {
         case errno(errorNo: Int32)
     }
     
-    init(detachState: DetachState = .joinable,@noescape threadFunc: SwiftThreadFunc) throws {
+    init(detachState: DetachState = .joinable, threadFunc: SwiftThreadFunc) throws {
 
         print("thread init")
 
@@ -28,7 +28,7 @@ public class ThreadUnit  {
 
     }
     
-    private func create(detachState: DetachState,  @noescape threadFunc: SwiftThreadFunc) throws {
+    private func create(detachState: DetachState,   threadFunc: SwiftThreadFunc) throws {
     
         var threadDataBag = retainedVoidPointer(x: threadFunc)
 
@@ -58,7 +58,7 @@ public class ThreadUnit  {
         }
         
         try throwErrorIfFailed {
-            return pthread_create(&pthread, nil, thread_function, threadDataBag)
+            return pthread_create(&self.pthread, nil, thread_function, threadDataBag)
         }
         
         try throwErrorIfFailed {
@@ -68,7 +68,7 @@ public class ThreadUnit  {
     
     public func join() throws {
         try throwErrorIfFailed {
-            return pthread_join(pthread, nil)
+            return pthread_join(self.pthread!, nil)
         }
     }
     
@@ -76,7 +76,7 @@ public class ThreadUnit  {
         print("thread deinit")
     }
     
-    private func throwErrorIfFailed(@noescape targetClosure: ()->Int32) throws {
+    private func throwErrorIfFailed( targetClosure: ()->Int32) throws {
         
         let returnValue = targetClosure()
         
@@ -91,7 +91,7 @@ public class ThreadUnitContainer {
     private var threadUnits = [ThreadUnit]()
     private let mutex = PosixMutex()
     
-    func add(detachState: ThreadUnit.DetachState, @noescape threadFunc: SwiftThreadFunc) throws  -> ThreadUnit {
+    func add(detachState: ThreadUnit.DetachState,  threadFunc: SwiftThreadFunc) throws  -> ThreadUnit {
         let newThread = try ThreadUnit(threadFunc: threadFunc)
         
         synchronized(mutex: mutex) { [unowned self] in
@@ -105,11 +105,19 @@ public class ThreadUnitContainer {
 public class Thread {
     static let threadContainer = ThreadUnitContainer()
     
-    public class func add(detachState: ThreadUnit.DetachState = ThreadUnit.DetachState.joinable, @noescape threadFunc: SwiftThreadFunc) throws -> ThreadUnit {
+    public class func add(detachState: ThreadUnit.DetachState = ThreadUnit.DetachState.joinable,  threadFunc: SwiftThreadFunc) throws -> ThreadUnit {
         return try threadContainer.add(detachState: detachState, threadFunc: threadFunc )
     }
     
-    public class func new(detachState: ThreadUnit.DetachState = ThreadUnit.DetachState.joinable, @noescape threadFunc: SwiftThreadFunc) throws -> ThreadUnit {
+    public class func new(detachState: ThreadUnit.DetachState = ThreadUnit.DetachState.joinable,  threadFunc: SwiftThreadFunc) throws -> ThreadUnit {
         return try ThreadUnit(detachState: detachState, threadFunc: threadFunc)
+    }
+}
+
+public func swifty(threadFunc: SwiftThreadFunc) {
+    do {
+    _ = try Thread.new(detachState: ThreadUnit.DetachState.detached,threadFunc: threadFunc)
+    } catch {
+        print("error")
     }
 }

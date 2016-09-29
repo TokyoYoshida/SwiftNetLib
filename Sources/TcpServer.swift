@@ -29,15 +29,15 @@ public class TcpServer {
         
         var on = 1
         try throwErrorIfFailed {
-            return setsockopt(listenfd, SOL_SOCKET, SO_REUSEADDR, &on, UInt32(sizeofValue(on)))
+            return setsockopt(self.listenfd, SOL_SOCKET, SO_REUSEADDR, &on, UInt32(sizeofValue(on)))
         }
         
         try throwErrorIfFailed {
-            return bind(listenfd, serverPointer, UInt32(sizeofValue(serveraddr)))
+            return bind(self.listenfd, serverPointer, UInt32(sizeofValue(serveraddr)))
         }
 
         try throwErrorIfFailed {
-            return listen(listenfd, SOMAXCONN)
+            return listen(self.listenfd, SOMAXCONN)
         }
         
     }
@@ -66,7 +66,7 @@ public class TcpServer {
     public func tcpClose(){
         close(listenfd)
     }
-    private func throwErrorIfFailed(@noescape targetClosure: ()->Int32) throws {
+    private func throwErrorIfFailed(targetClosure: ()->Int32) throws {
         
         let returnValue = targetClosure()
         
