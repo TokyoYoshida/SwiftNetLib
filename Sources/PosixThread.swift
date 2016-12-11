@@ -91,7 +91,7 @@ public class ThreadUnitContainer {
     private var threadUnits = [ThreadUnit]()
     private let mutex = PosixMutex()
     
-    func add(detachState: ThreadUnit.DetachState,  threadFunc: SwiftThreadFunc) throws  -> ThreadUnit {
+    func add(detachState: ThreadUnit.DetachState = ThreadUnit.DetachState.joinable,  threadFunc: SwiftThreadFunc) throws  -> ThreadUnit {
         let newThread = try ThreadUnit(threadFunc: threadFunc)
         
         synchronized(mutex: mutex) { [unowned self] in
@@ -99,6 +99,10 @@ public class ThreadUnitContainer {
         }
         
         return newThread
+    }
+    
+    func joinAll() throws {
+        try threadUnits.forEach { try $0.join() }
     }
 }
 

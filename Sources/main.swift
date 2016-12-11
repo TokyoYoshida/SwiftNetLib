@@ -21,6 +21,8 @@ args[1..<args.count].forEach {
         ret = threadServerLib()
     case "httpServer":
         ret = httpServer()
+    case "threadPool":
+        ret = threadPool()
     default:
         print("error: Unknown command.")
     }

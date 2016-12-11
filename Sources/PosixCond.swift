@@ -20,6 +20,12 @@ public class PosixCond {
         pthread_cond_wait(&cond, &mutex.mutex)
     }
     
+    public func wait(mutex: PosixMutex, waitBreakCondition: ()->Bool  ){
+        while(!waitBreakCondition()){
+            pthread_cond_wait(&cond, &mutex.mutex)
+        }
+    }
+
     public func signal(){
         pthread_cond_signal(&cond)
     }

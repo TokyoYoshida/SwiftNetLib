@@ -45,11 +45,11 @@ func httpServer() -> Int32
             
             ws.onBinary { data in
                 print("data: \(data)")
-                try ws.send(data)
+                try ws.send("server reply" + data)
             }
             ws.onText { text in
                 print("data: \(text)")
-                try ws.send(text)
+                try ws.send("server reply : " + text)
             }
         }
         
