@@ -23,6 +23,7 @@
 		1EC829061D36746500916973 /* HttpServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC829051D36746500916973 /* HttpServer.swift */; };
 		1ECB310A1DFD82E7009C4D07 /* ThreadPoolConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECB31091DFD82E7009C4D07 /* ThreadPoolConsumer.swift */; };
 		1ECB310C1DFD8F39009C4D07 /* ExampleOfThreadPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECB310B1DFD8F39009C4D07 /* ExampleOfThreadPool.swift */; };
+		1ECD60241DFEF51900F80F8C /* Kqueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECD60231DFEF51900F80F8C /* Kqueue.swift */; };
 		1EE887501D37D5FA003C8915 /* HttpResuestParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE8874F1D37D5FA003C8915 /* HttpResuestParser.swift */; };
 		1EE887541D37D656003C8915 /* TcpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887531D37D656003C8915 /* TcpData.swift */; };
 		1EE887561D37DED6003C8915 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887551D37DED6003C8915 /* Result.swift */; };
@@ -49,6 +50,7 @@
 		1EC829051D36746500916973 /* HttpServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpServer.swift; sourceTree = "<group>"; };
 		1ECB31091DFD82E7009C4D07 /* ThreadPoolConsumer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadPoolConsumer.swift; sourceTree = "<group>"; };
 		1ECB310B1DFD8F39009C4D07 /* ExampleOfThreadPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfThreadPool.swift; sourceTree = "<group>"; };
+		1ECD60231DFEF51900F80F8C /* Kqueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kqueue.swift; sourceTree = "<group>"; };
 		1EE8874F1D37D5FA003C8915 /* HttpResuestParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpResuestParser.swift; sourceTree = "<group>"; };
 		1EE887531D37D656003C8915 /* TcpData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpData.swift; sourceTree = "<group>"; };
 		1EE887551D37DED6003C8915 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
@@ -89,6 +91,7 @@
 				1EE887531D37D656003C8915 /* TcpData.swift */,
 				1E54C2821D33E59F0042448F /* TcpClient.swift */,
 				1E54C2841D33EE840042448F /* TcpServer.swift */,
+				1ECD60231DFEF51900F80F8C /* Kqueue.swift */,
 			);
 			name = TcpLib;
 			sourceTree = "<group>";
@@ -249,6 +252,7 @@
 				1EE887541D37D656003C8915 /* TcpData.swift in Sources */,
 				1EC829061D36746500916973 /* HttpServer.swift in Sources */,
 				1ECB310C1DFD8F39009C4D07 /* ExampleOfThreadPool.swift in Sources */,
+				1ECD60241DFEF51900F80F8C /* Kqueue.swift in Sources */,
 				1E35DCDE1D4A3060008FFE4F /* ExampleOfWebServer.swift in Sources */,
 				1EE8875A1D37E1E9003C8915 /* TcpStream.swift in Sources */,
 				1E2CCFA11D48F229001EEA2D /* PosixMutex.swift in Sources */,

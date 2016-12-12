@@ -1,4 +1,4 @@
-## SwiftLibuv
+## SwiftNetLib
 
 SwiftNetLib is TCP network library, in multi-thread support.
 It also provides a simple framework of Web applications that use these libraries.

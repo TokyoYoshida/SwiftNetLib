@@ -95,4 +95,8 @@ public class TcpClient {
         }
         closed = true
     }
+    
+    public func getSocket() -> Int32 {
+        return self.socketfd;
+    }
 }

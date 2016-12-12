@@ -66,6 +66,11 @@ public class TcpServer {
     public func tcpClose(){
         close(listenfd)
     }
+    
+    public func getSocket()->Int32 {
+        return self.listenfd
+    }
+    
     private func throwErrorIfFailed(targetClosure: ()->Int32) throws {
         
         let returnValue = targetClosure()
