@@ -31,11 +31,15 @@ func httpServer() -> Int32
             return Response(body: Data("error page."))
         }
 
+        let kqueue = try! Kqueue(maxEvents:100)
+        let ev = try! EventNotifier(eventManager: kqueue, tcpServer: tcpServer)
+
 
         let server =     HttpServer(
             tcpListener:   tcpServer,
             errorCallBack: errorCallBack,
-            responder:      MyResponder()
+            responder:      MyResponder(),
+            eventNotifier: ev
         )
 
         server.use(add_middleware: MyMiddleware())

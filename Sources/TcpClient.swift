@@ -6,7 +6,7 @@
 
 import C7
 
-public class TcpClient {
+public class TcpClient : SocketHandler{
     private  var socketfd: Int32
     internal var closed:   Bool    = true // TODO avoid state management
 

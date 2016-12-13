@@ -5,63 +5,47 @@
     import Glibc
 #endif
 
-class Kqueue {
+class Kqueue : EventManager {
     static let DEFAULT_HOST = "127.0.0.1"
 
-    var kq:Int32
-    var kevList:[kevent]
-    var timeout:timespec
-    var tcpServer:TcpServer
+    let kq        :Int32
+    var kevList   :[kevent]
     
     enum Error: ErrorProtocol {
         case errno(errorNo: Int32)
     }
     
-    
-    init(tcpServer: TcpServer,maxEvents: Int,timeout:timespec) throws {
-        self.tcpServer = tcpServer
-        self.timeout   = timeout
+    init(maxEvents: Int) throws {
         kq = kqueue()
         guard kq != -1 else {
-            throw Error.errno(errorNo: errno)
-        }
-
-        var kev    = kevent()
-        kev.ident  = UInt(tcpServer.getSocket());
-        kev.filter = Int16(EVFILT_READ);
-        kev.flags  = UInt16(EV_ADD);
-        kev.fflags = 0;
-        kev.data   = 0;
-
-        guard kevent(kq, &kev, 1, nil, 0, nil) != -1 else {
             throw Error.errno(errorNo: errno)
         }
 
         self.kevList = Array(repeating:kevent(), count: maxEvents)
     }
     
-    func serverLoop() throws {
-        while(true){
-            let n = kevent(kq, nil, 0, &kevList, Int32(sizeofValue(kevList)/sizeofValue(kevList[0])), &timeout);
-            for i in 0..<Int(n) {
-                let sock = kevList[i].ident
-                if ( sock == UInt(self.tcpServer.getSocket()) ){
-                    let client = tcpServer.tcpAccept()
+    func add(handler: SocketHandler) throws {
+        var kev    = makeKevent(with: handler.getSocket());
 
-                    var kev    = makeKevent(with: tcpServer.getSocket()); // TODO local var is possible ?
-                    guard kevent(kq, &kev, 1, nil, 0, nil) != -1 else {
-                        close(client.getSocket());
-                        throw Error.errno(errorNo: errno)
-                    }
-                } else {
-                    // TODO　client process
-                }
-                
-            }
-            
+        guard kevent(kq, &kev, 1, nil, 0, nil) != -1 else {
+            throw Error.errno(errorNo: errno)
         }
     }
+    
+    func wait(callBack: EventCallBackType ) throws {
+        let n = kevent(kq, nil, 0, &kevList, Int32(kevList.count), nil);
 
+        guard n != -1 else {
+            throw Error.errno(errorNo: errno)
+        }
+
+        for i in 0..<Int(n) {
+            let sock = kevList[i].ident
+
+            try callBack(socket: Int32(sock))
+        }
+    }
+    
     func makeKevent(with socket:Int32) -> kevent {
         var kev    = kevent();
         kev.ident  = UInt(socket);

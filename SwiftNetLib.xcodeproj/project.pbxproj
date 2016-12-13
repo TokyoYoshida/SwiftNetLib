@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E272B151E004BC300299D68 /* ExampleOfKqueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E272B141E004BC300299D68 /* ExampleOfKqueue.swift */; };
+		1E272B171E0057ED00299D68 /* NotifyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E272B161E0057ED00299D68 /* NotifyEvent.swift */; };
 		1E2CCF9F1D48E7E7001EEA2D /* PosixThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */; };
 		1E2CCFA11D48F229001EEA2D /* PosixMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2CCFA01D48F229001EEA2D /* PosixMutex.swift */; };
 		1E2CCFA41D48F2A9001EEA2D /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2CCFA31D48F2A9001EEA2D /* Common.swift */; };
@@ -34,6 +36,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1E272B141E004BC300299D68 /* ExampleOfKqueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfKqueue.swift; sourceTree = "<group>"; };
+		1E272B161E0057ED00299D68 /* NotifyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifyEvent.swift; sourceTree = "<group>"; };
 		1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixThread.swift; sourceTree = "<group>"; };
 		1E2CCFA01D48F229001EEA2D /* PosixMutex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixMutex.swift; sourceTree = "<group>"; };
 		1E2CCFA31D48F2A9001EEA2D /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
@@ -74,6 +78,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1E272B181E00616600299D68 /* EventLib */ = {
+			isa = PBXGroup;
+			children = (
+				1E272B161E0057ED00299D68 /* NotifyEvent.swift */,
+			);
+			name = EventLib;
+			sourceTree = "<group>";
+		};
 		1E2CCFA21D48F278001EEA2D /* Examples */ = {
 			isa = PBXGroup;
 			children = (
@@ -81,6 +93,7 @@
 				1ECB310B1DFD8F39009C4D07 /* ExampleOfThreadPool.swift */,
 				1E35DCDF1D4A30A6008FFE4F /* ExampleOfTcp.swift */,
 				1E35DCDD1D4A3060008FFE4F /* ExampleOfWebServer.swift */,
+				1E272B141E004BC300299D68 /* ExampleOfKqueue.swift */,
 			);
 			name = Examples;
 			sourceTree = "<group>";
@@ -88,6 +101,7 @@
 		1E54C2811D33E5690042448F /* TcpLib */ = {
 			isa = PBXGroup;
 			children = (
+				1EE887591D37E1E9003C8915 /* TcpStream.swift */,
 				1EE887531D37D656003C8915 /* TcpData.swift */,
 				1E54C2821D33E59F0042448F /* TcpClient.swift */,
 				1E54C2841D33EE840042448F /* TcpServer.swift */,
@@ -127,16 +141,15 @@
 			name = ThreadLib;
 			sourceTree = "<group>";
 		};
-		1EC829041D36744B00916973 /* OtherLib */ = {
+		1EC829041D36744B00916973 /* HttpLib */ = {
 			isa = PBXGroup;
 			children = (
 				1EC829051D36746500916973 /* HttpServer.swift */,
 				1EE8874F1D37D5FA003C8915 /* HttpResuestParser.swift */,
 				1EE887571D37E1A5003C8915 /* HttpResponseSerializer.swift */,
-				1EE887591D37E1E9003C8915 /* TcpStream.swift */,
 				1EE887551D37DED6003C8915 /* Result.swift */,
 			);
-			name = OtherLib;
+			name = HttpLib;
 			sourceTree = "<group>";
 		};
 		"___RootGroup_" = {
@@ -176,8 +189,9 @@
 		"_______Group_SwiftNetLib" /* SwiftNetLib */ = {
 			isa = PBXGroup;
 			children = (
-				1EC829041D36744B00916973 /* OtherLib */,
+				1EC829041D36744B00916973 /* HttpLib */,
 				1E54C2811D33E5690042448F /* TcpLib */,
+				1E272B181E00616600299D68 /* EventLib */,
 				1E9D84A91D2F6C4100C5AA35 /* ThreadLib */,
 				1E73CB6F1D2BEE8400477236 /* ThreadTest */,
 				1E73CB6E1D2BEE7200477236 /* SocketTest */,
@@ -256,7 +270,9 @@
 				1E35DCDE1D4A3060008FFE4F /* ExampleOfWebServer.swift in Sources */,
 				1EE8875A1D37E1E9003C8915 /* TcpStream.swift in Sources */,
 				1E2CCFA11D48F229001EEA2D /* PosixMutex.swift in Sources */,
+				1E272B171E0057ED00299D68 /* NotifyEvent.swift in Sources */,
 				1E73CB6D1D2BEE5D00477236 /* ThreadTest.swift in Sources */,
+				1E272B151E004BC300299D68 /* ExampleOfKqueue.swift in Sources */,
 				1E2CCFA41D48F2A9001EEA2D /* Common.swift in Sources */,
 				1E9D84AB1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift in Sources */,
 				1EE887501D37D5FA003C8915 /* HttpResuestParser.swift in Sources */,

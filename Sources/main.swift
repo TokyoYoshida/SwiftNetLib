@@ -23,6 +23,8 @@ args[1..<args.count].forEach {
         ret = httpServer()
     case "threadPool":
         ret = threadPool()
+    case "kqueue":
+        ret = kqueueLib()
     default:
         print("error: Unknown command.")
     }

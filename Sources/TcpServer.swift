@@ -4,7 +4,7 @@
     import Glibc
 #endif
 
-public class TcpServer {
+public class TcpServer : SocketHandler {
     private var listenfd: Int32
     
     static let DEFAULT_HOST = "127.0.0.1"
@@ -14,7 +14,7 @@ public class TcpServer {
         case errno(errorNo: Int32)
     }
     
-    private init(host: String, port: UInt16) throws {
+    public init(host: String, port: UInt16) throws {
         listenfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
         if (listenfd < 0) {
             print("error1")

@@ -19,13 +19,16 @@ class HttpServer : HttpServable {
     private let mutex =        PosixMutex()
     private var middleware:    [Middleware]
     private let responder:     Responder
+    private let eventNotifier: EventNotifier
     
     init(tcpListener:   TcpServer,
          parser:        HttpRequestParsable = HttpRequestParser(),
          serializer:    HTTPResponseSerializable = HTTPResponseSerializer(),
          middleware:    [Middleware] = [],
          errorCallBack: ErrorCallBack,
-         responder:     Responder ) {
+         responder:     Responder,
+         eventNotifier:  EventNotifier
+        ) {
 
         self.tcpListener   = tcpListener
         self.parser        = parser
@@ -33,25 +36,44 @@ class HttpServer : HttpServable {
         self.middleware    = middleware
         self.responder     = responder
         self.errorCallBack = errorCallBack
+        self.eventNotifier = eventNotifier
     }
 
     func serve() throws {
         while(true){
-            let client = self.tcpListener.tcpAccept()
-            
-            _ = try Thread.new(detachState: ThreadUnit.DetachState.detached) {
-                do {
+            try eventNotifier.wait { sock in
+                if ( sock == self.tcpListener.getSocket() ){
+                    let client = self.tcpListener.tcpAccept()
+                    
+                    try self.eventNotifier.add(handler: client)
+                } else {
+                    let client = TcpClient(socketfd: Int32(sock))
+                    
                     let processor = HttpProcessor(httpServer: self, client: client, middleware: self.middleware,callBack: self.responder)
                     
                     try processor.doProcessLoop(mutex: self.mutex)
-
-                } catch {
-                    print("error")
                 }
             }
         }
     }
     
+//    func serve() throws {
+//        while(true){
+//            let client = self.tcpListener.tcpAccept()
+//            
+//            _ = try Thread.new(detachState: ThreadUnit.DetachState.detached) {
+//                do {
+//                    let processor = HttpProcessor(httpServer: self, client: client, middleware: self.middleware,callBack: self.responder)
+//                    
+//                    try processor.doProcessLoop(mutex: self.mutex)
+//                    
+//                } catch {
+//                    print("error")
+//                }
+//            }
+//        }
+//    }
+
     func use(add_middleware: Middleware){
         middleware.append(add_middleware)
     }
@@ -80,34 +102,32 @@ class HttpServer : HttpServable {
         func doProcessLoop(mutex: PosixMutex) throws {
             let readBuffer = self.httpServer.parser.createReadBuffer();
             
-            while(!self.client.closed){
-                guard let data = try self.client.tcpRead() else {
-                    try self.client.tcpClose()
-                    print("tcp close")
-                    return
-                }
-                
-                print("lenbytes = \(data.lenBytes)")
-                
-                guard data.lenBytes != 0 else {
-                    try self.client.tcpClose()
-                    print("tcp close2")
-                    return
-                }
-                
-                if let str = data.description  {
-                    print(str)
-                }
+            guard let data = try self.client.tcpRead() else {
+                try self.client.tcpClose()
+                print("tcp close")
+                return
+            }
+            
+            print("lenbytes = \(data.lenBytes)")
+            
+            guard data.lenBytes != 0 else {
+                try self.client.tcpClose()
+                print("tcp close2")
+                return
+            }
+            
+            if let str = data.description  {
+                print(str)
+            }
 
-                self.httpServer.parser.parse(readBuffer: readBuffer, readData: data) { [unowned self] request in
-                        let response = try self.middleware.chain(to: self.callBack).respond(to: request)
-                        self.serialize(response: response)
-                    
-                        if let didUpgrade = response.didUpgrade {
-                            try didUpgrade(request, self.stream)
-                            try self.client.tcpClose()
-                        }
-                }
+            self.httpServer.parser.parse(readBuffer: readBuffer, readData: data) { [unowned self] request in
+                    let response = try self.middleware.chain(to: self.callBack).respond(to: request)
+                    self.serialize(response: response)
+                
+                    if let didUpgrade = response.didUpgrade {
+                        try didUpgrade(request, self.stream)
+                        try self.client.tcpClose()
+                    }
             }
         }
         
