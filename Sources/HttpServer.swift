@@ -12,14 +12,16 @@ typealias ErrorCallBack = (error: ErrorProtocol) -> Response?
 // typealias Responder = (request: Request) -> Response?
 
 class HttpServer : HttpServable {
-    private let tcpListener:   TcpServer
-    private let parser:        HttpRequestParsable
-    private let serializer:    HTTPResponseSerializable
-    private let errorCallBack: ErrorCallBack
-    private let mutex =        PosixMutex()
-    private var middleware:    [Middleware]
-    private let responder:     Responder
-    private let eventNotifier: EventNotifier
+    private let tcpListener:     TcpServer
+    private let parser:          HttpRequestParsable
+    private let serializer:      HTTPResponseSerializable
+    private let errorCallBack:   ErrorCallBack
+    private let mutex =          PosixMutex()
+    private var middleware:      [Middleware]
+    private let responder:       Responder
+    private let eventNotifier:   EventNotifier
+    private let threadPoolQueue: AsyncQueue<SwiftThreadFunc>
+    private var processors:      [Int32:HttpProcessor]
     
     init(tcpListener:   TcpServer,
          parser:        HttpRequestParsable = HttpRequestParser(),
@@ -27,32 +29,76 @@ class HttpServer : HttpServable {
          middleware:    [Middleware] = [],
          errorCallBack: ErrorCallBack,
          responder:     Responder,
-         eventNotifier:  EventNotifier
+         eventNotifier:  EventNotifier,
+         threadPoolQueue:  AsyncQueue<SwiftThreadFunc>
         ) {
 
-        self.tcpListener   = tcpListener
-        self.parser        = parser
-        self.serializer    = serializer
-        self.middleware    = middleware
-        self.responder     = responder
-        self.errorCallBack = errorCallBack
-        self.eventNotifier = eventNotifier
+        self.tcpListener     = tcpListener
+        self.parser          = parser
+        self.serializer      = serializer
+        self.middleware      = middleware
+        self.responder       = responder
+        self.errorCallBack   = errorCallBack
+        self.eventNotifier   = eventNotifier
+        self.threadPoolQueue = threadPoolQueue
+        self.processors = [Int32:HttpProcessor]()
     }
 
     func serve() throws {
+        print("process SingleSocket")
         while(true){
-            try eventNotifier.wait { sock in
-                if ( sock == self.tcpListener.getSocket() ){
-                    let client = self.tcpListener.tcpAccept()
-                    
-                    try self.eventNotifier.add(handler: client)
-                } else {
-                    let client = TcpClient(socketfd: Int32(sock))
-                    
-                    let processor = HttpProcessor(httpServer: self, client: client, middleware: self.middleware,callBack: self.responder)
-                    
-                    try processor.doProcessLoop(mutex: self.mutex)
+            if eventNotifier.isWaiting() {
+                try eventNotifier.wait { socket in
+                    self.doAcceptOrRead(socket: socket)
                 }
+            }
+        }
+    }
+
+    private func doAcceptOrRead(socket: Int32){
+
+        do {
+            if ( socket == self.tcpListener.getSocket() ){
+                try accept()
+            } else {
+                var p = self.processors[socket]
+
+                if p == nil {
+                    let client = TcpClient(socketfd: socket)
+                    p = HttpProcessor(httpServer: self, client: client, middleware: self.middleware,callBack: self.responder)
+                    self.processors[socket] = p
+                }
+
+                try readAndResponse(processor: p!)
+            }
+        } catch {
+            print("exception occured") // TODO
+        }
+    }
+    
+    private func accept() throws {
+        let client = self.tcpListener.tcpAccept()
+        print("accept and event add")
+        try self.eventNotifier.add(handler: client)
+    }
+    
+    private func readAndResponse(processor: HttpProcessor) throws {
+        
+        try self.eventNotifier.disable(handler: processor.client)
+        try self.threadPoolQueue.put {
+            print("client thread read")
+            do {
+                try processor.doProcessLoop(mutex: self.mutex)
+                if processor.client.closed {
+                    self.processors[processor.client.getSocket()] = nil
+                } else {
+                    try self.eventNotifier.enable(handler: processor.client)
+                }
+            } catch NotifyError.errno(let errno) {
+                print("exception in thread1 : \(errno)") //TODO
+            } catch {
+                print("exception in thread1") //TODO
+                
             }
         }
     }
@@ -60,7 +106,7 @@ class HttpServer : HttpServable {
 //    func serve() throws {
 //        while(true){
 //            let client = self.tcpListener.tcpAccept()
-//            
+//
 //            _ = try Thread.new(detachState: ThreadUnit.DetachState.detached) {
 //                do {
 //                    let processor = HttpProcessor(httpServer: self, client: client, middleware: self.middleware,callBack: self.responder)
@@ -126,6 +172,7 @@ class HttpServer : HttpServable {
                 
                     if let didUpgrade = response.didUpgrade {
                         try didUpgrade(request, self.stream)
+                        print("close client")
                         try self.client.tcpClose()
                     }
             }

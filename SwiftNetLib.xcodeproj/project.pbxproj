@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1E272B151E004BC300299D68 /* ExampleOfKqueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E272B141E004BC300299D68 /* ExampleOfKqueue.swift */; };
-		1E272B171E0057ED00299D68 /* NotifyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E272B161E0057ED00299D68 /* NotifyEvent.swift */; };
+		1E272B171E0057ED00299D68 /* EventNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E272B161E0057ED00299D68 /* EventNotifier.swift */; };
 		1E2CCF9F1D48E7E7001EEA2D /* PosixThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */; };
 		1E2CCFA11D48F229001EEA2D /* PosixMutex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2CCFA01D48F229001EEA2D /* PosixMutex.swift */; };
 		1E2CCFA41D48F2A9001EEA2D /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2CCFA31D48F2A9001EEA2D /* Common.swift */; };
@@ -37,7 +37,7 @@
 
 /* Begin PBXFileReference section */
 		1E272B141E004BC300299D68 /* ExampleOfKqueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfKqueue.swift; sourceTree = "<group>"; };
-		1E272B161E0057ED00299D68 /* NotifyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotifyEvent.swift; sourceTree = "<group>"; };
+		1E272B161E0057ED00299D68 /* EventNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventNotifier.swift; sourceTree = "<group>"; };
 		1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixThread.swift; sourceTree = "<group>"; };
 		1E2CCFA01D48F229001EEA2D /* PosixMutex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixMutex.swift; sourceTree = "<group>"; };
 		1E2CCFA31D48F2A9001EEA2D /* Common.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
@@ -81,7 +81,7 @@
 		1E272B181E00616600299D68 /* EventLib */ = {
 			isa = PBXGroup;
 			children = (
-				1E272B161E0057ED00299D68 /* NotifyEvent.swift */,
+				1E272B161E0057ED00299D68 /* EventNotifier.swift */,
 			);
 			name = EventLib;
 			sourceTree = "<group>";
@@ -270,7 +270,7 @@
 				1E35DCDE1D4A3060008FFE4F /* ExampleOfWebServer.swift in Sources */,
 				1EE8875A1D37E1E9003C8915 /* TcpStream.swift in Sources */,
 				1E2CCFA11D48F229001EEA2D /* PosixMutex.swift in Sources */,
-				1E272B171E0057ED00299D68 /* NotifyEvent.swift in Sources */,
+				1E272B171E0057ED00299D68 /* EventNotifier.swift in Sources */,
 				1E73CB6D1D2BEE5D00477236 /* ThreadTest.swift in Sources */,
 				1E272B151E004BC300299D68 /* ExampleOfKqueue.swift in Sources */,
 				1E2CCFA41D48F2A9001EEA2D /* Common.swift in Sources */,

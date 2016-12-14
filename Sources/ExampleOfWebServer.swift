@@ -34,12 +34,17 @@ func httpServer() -> Int32
         let kqueue = try! Kqueue(maxEvents:100)
         let ev = try! EventNotifier(eventManager: kqueue, tcpServer: tcpServer)
 
+        let queue = AsyncQueue<SwiftThreadFunc>(size:100)
+        
+        let consumer = ThreadPoolConsumer(queue: queue)
+        try! consumer.makePoolThreads(numOfThreads:7)
 
         let server =     HttpServer(
             tcpListener:   tcpServer,
             errorCallBack: errorCallBack,
             responder:      MyResponder(),
-            eventNotifier: ev
+            eventNotifier: ev,
+            threadPoolQueue: queue
         )
 
         server.use(add_middleware: MyMiddleware())

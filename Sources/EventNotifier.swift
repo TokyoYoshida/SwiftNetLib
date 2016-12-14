@@ -10,19 +10,24 @@ protocol SocketHandler {
 
 protocol EventManager {
     func add(handler: SocketHandler) throws
+    func delete(handler: SocketHandler) throws
     func wait(callBack: EventCallBackType) throws
+    func disable(handler: SocketHandler) throws
+    func enable(handler: SocketHandler) throws
+    func isWaiting() -> Bool
 }
 
 typealias EventCallBackType = (socket: Int32) throws -> Void
+
+enum NotifyError: ErrorProtocol {
+    case errno(errorNo: Int32)
+}
+
 
 public class EventNotifier {
     let eventManager: EventManager
     let tcpServer   : TcpServer
     
-    enum Error: ErrorProtocol {
-        case errno(errorNo: Int32)
-    }
-
     init(eventManager: EventManager, tcpServer: TcpServer) throws {
         self.eventManager = eventManager
         self.tcpServer = tcpServer
@@ -37,6 +42,22 @@ public class EventNotifier {
         try eventManager.add(handler: handler)
     }
 
+    func delete(handler: SocketHandler) throws {
+        try eventManager.delete(handler: handler)
+    }
+
+    func disable(handler: SocketHandler) throws {
+        try eventManager.disable(handler: handler)
+    }
+    
+    func enable(handler: SocketHandler) throws {
+        try eventManager.enable(handler: handler)
+    }
+
+    func isWaiting() -> Bool{
+        return eventManager.isWaiting()
+    }
+    
     func serverLoopExample() throws {
         while(true){
             try eventManager.wait { sock in
@@ -58,6 +79,4 @@ public class EventNotifier {
             
         }
     }
-    
-
 }

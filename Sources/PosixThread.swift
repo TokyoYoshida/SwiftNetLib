@@ -41,7 +41,7 @@ public class ThreadUnit  {
             defer {
                 releaseRetainedPointer(x: threadFunc)
             }
-
+        
             threadFunc()
 
             return nil
