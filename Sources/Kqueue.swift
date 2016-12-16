@@ -11,6 +11,8 @@ class Kqueue : EventManager {
     let kq        :Int32
     var kevList   :[kevent]
     var waitingCount: Int
+    let mutex = PosixMutex()
+    var notifyWaiting = PosixCond()
     
     init(maxEvents: Int) throws {
         waitingCount = 0
@@ -23,43 +25,19 @@ class Kqueue : EventManager {
     }
     
     func add(handler: SocketHandler) throws {
-        waitingCount += 1
-
-        var kev    = makeKevent(with: handler.getSocket(), flags:EV_ADD);
-
-        guard kevent(kq, &kev, 1, nil, 0, nil) != -1 else {
-            throw NotifyError.errno(errorNo: errno)
-        }
+        try setKevent(with: handler.getSocket(), flags:EV_ADD);
     }
 
     func delete(handler: SocketHandler) throws {
-        waitingCount += 1
-        
-        var kev    = makeKevent(with: handler.getSocket(), flags:EV_DELETE);
-        
-        guard kevent(kq, &kev, 1, nil, 0, nil) != -1 else {
-            throw NotifyError.errno(errorNo: errno)
-        }
+        try setKevent(with: handler.getSocket(), flags:EV_DELETE);
     }
 
     func disable(handler: SocketHandler) throws {
-        waitingCount -= 1
-
-        var kev    = makeKevent(with: handler.getSocket(), flags:EV_DISABLE);
-        
-        guard kevent(kq, &kev, 1, nil, 0, nil) != -1 else {
-            throw NotifyError.errno(errorNo: errno)
-        }
+        try setKevent(with: handler.getSocket(), flags:EV_DISABLE);
     }
     
     func enable(handler: SocketHandler) throws {
-        waitingCount += 1
-        
-        var kev    = makeKevent(with: handler.getSocket(), flags:EV_ENABLE);
-        
-        guard kevent(kq, &kev, 1, nil, 0, nil) != -1 else {
-            throw NotifyError.errno(errorNo: errno)
-        }
+        try setKevent(with: handler.getSocket(), flags:EV_ENABLE);
     }
 
     func wait(callBack: EventCallBackType ) throws {
@@ -79,14 +57,50 @@ class Kqueue : EventManager {
     func isWaiting() -> Bool{
         return waitingCount > 0
     }
+
+    func blockUntilIntoWaitingState() {
+        mutex.lock()
+
+        defer {
+            mutex.unlock()
+        }
+
+        notifyWaiting.wait(mutex: mutex){
+            return self.isWaiting()
+        }
+        
+        return
+    }
     
-    func makeKevent(with socket:Int32, flags: Int32) -> kevent {
+    private func setKevent(with socket:Int32, flags: Int32) throws {
         var kev    = kevent();
         kev.ident  = UInt(socket);
         kev.filter = Int16(EVFILT_READ);
         kev.flags  = UInt16(flags);
         kev.fflags = 0;
         kev.data   = 0;
-        return kev;
+
+        guard kevent(kq, &kev, 1, nil, 0, nil) != -1 else {
+            throw NotifyError.errno(errorNo: errno)
+        }
+        
+        mutex.lock()
+        
+        defer {
+            mutex.unlock()
+        }
+
+        switch(flags){
+        case EV_ADD, EV_ENABLE:
+            let needSignal = !isWaiting()
+            waitingCount += 1
+            if(needSignal){
+                notifyWaiting.signal()
+            }
+        case EV_DELETE, EV_DISABLE:
+            waitingCount -= 1
+        default:
+            assert(false, "This block is expected to be not called.")
+        }
     }
 }

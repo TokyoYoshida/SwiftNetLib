@@ -110,6 +110,14 @@
 			name = TcpLib;
 			sourceTree = "<group>";
 		};
+		1E5DC62C1E045E4300EB7A34 /* QueueLib */ = {
+			isa = PBXGroup;
+			children = (
+				1E9FDE101DFCE6860089C532 /* AsyncQueue.swift */,
+			);
+			name = QueueLib;
+			sourceTree = "<group>";
+		};
 		1E73CB6E1D2BEE7200477236 /* SocketTest */ = {
 			isa = PBXGroup;
 			children = (
@@ -135,7 +143,6 @@
 				1E79F1491D47C3B700DD8B33 /* PosixSemaphore.swift */,
 				1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */,
 				1E9FDE0E1DFCE47E0089C532 /* PosixCond.swift */,
-				1E9FDE101DFCE6860089C532 /* AsyncQueue.swift */,
 				1ECB31091DFD82E7009C4D07 /* ThreadPoolConsumer.swift */,
 			);
 			name = ThreadLib;
@@ -193,6 +200,7 @@
 				1E54C2811D33E5690042448F /* TcpLib */,
 				1E272B181E00616600299D68 /* EventLib */,
 				1E9D84A91D2F6C4100C5AA35 /* ThreadLib */,
+				1E5DC62C1E045E4300EB7A34 /* QueueLib */,
 				1E73CB6F1D2BEE8400477236 /* ThreadTest */,
 				1E73CB6E1D2BEE7200477236 /* SocketTest */,
 				1E2CCFA21D48F278001EEA2D /* Examples */,

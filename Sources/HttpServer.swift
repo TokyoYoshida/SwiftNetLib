@@ -43,14 +43,13 @@ class HttpServer : HttpServable {
         self.threadPoolQueue = threadPoolQueue
         self.processors = [Int32:HttpProcessor]()
     }
-
+    
     func serve() throws {
         print("process SingleSocket")
         while(true){
-            if eventNotifier.isWaiting() {
-                try eventNotifier.wait { socket in
-                    self.doAcceptOrRead(socket: socket)
-                }
+            eventNotifier.blockUntilIntoWaitingState()
+            try eventNotifier.wait { socket in
+                self.doAcceptOrRead(socket: socket)
             }
         }
     }

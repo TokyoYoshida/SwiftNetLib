@@ -15,6 +15,7 @@ protocol EventManager {
     func disable(handler: SocketHandler) throws
     func enable(handler: SocketHandler) throws
     func isWaiting() -> Bool
+    func blockUntilIntoWaitingState()
 }
 
 typealias EventCallBackType = (socket: Int32) throws -> Void
@@ -58,6 +59,10 @@ public class EventNotifier {
         return eventManager.isWaiting()
     }
     
+    func blockUntilIntoWaitingState() {
+        return eventManager.blockUntilIntoWaitingState()
+    }
+
     func serverLoopExample() throws {
         while(true){
             try eventManager.wait { sock in
