@@ -49,7 +49,7 @@ func httpServer() -> Int32
 
         server.use(add_middleware: MyMiddleware())
 
-        let wsServer = WebSocketServer { req, ws in
+        let wsServer = BroadcastableWebSocketServer { req, ws, wss in
             print("connected")
 
             ws.onBinary { data in
@@ -58,8 +58,13 @@ func httpServer() -> Int32
             }
             ws.onText { text in
                 print("data: \(text)")
-                try ws.send("server reply : " + text)
+                try ws.send("server reply1 : " + text)
+                print("test wss num :\(wss.all.count)")
+                try wss.all.forEach {
+                    try $1.send("server reply2 : " + text)
+                }
             }
+            print("wss num :\(wss.all.count)")
         }
 
         server.use(add_middleware:wsServer)

@@ -28,6 +28,7 @@ extension String {
     
 }
 
+
 public class PosixSemaphore  {
     private var semaphoreName: String
     private var handle:        UnsafeMutablePointer<sem_t>!
@@ -44,7 +45,6 @@ public class PosixSemaphore  {
         try open(initialValue: initialValue)
     }
     
-    
     public func wait() throws {
         guard sem_wait(handle) != -1 else {
             throw Error.errno(errorNo: errno)
@@ -55,8 +55,7 @@ public class PosixSemaphore  {
         guard sem_post(handle) != -1 else {
             throw Error.errno(errorNo: errno)
         }
-    }
-    
+    }    
     
     public func finalize() throws {
         try unlink()

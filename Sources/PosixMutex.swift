@@ -32,9 +32,11 @@ private let globalMutex = PosixMutex()
 public func synchronized<A>(mutex: PosixMutex = globalMutex,  syncFunc:  () -> A) -> A {
     mutex.lock()
     
-    let retValue = syncFunc()
+    defer {
+        mutex.unlock()
+    }
     
-    mutex.unlock()
+    let retValue = syncFunc()
     
     return retValue
 }

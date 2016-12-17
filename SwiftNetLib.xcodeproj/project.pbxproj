@@ -25,6 +25,7 @@
 		1EC829061D36746500916973 /* HttpServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EC829051D36746500916973 /* HttpServer.swift */; };
 		1ECB310A1DFD82E7009C4D07 /* ThreadPoolConsumer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECB31091DFD82E7009C4D07 /* ThreadPoolConsumer.swift */; };
 		1ECB310C1DFD8F39009C4D07 /* ExampleOfThreadPool.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECB310B1DFD8F39009C4D07 /* ExampleOfThreadPool.swift */; };
+		1ECD0E201E04FB8B00240EF7 /* BroadcastableWebSocketServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECD0E1F1E04FB8B00240EF7 /* BroadcastableWebSocketServer.swift */; };
 		1ECD60241DFEF51900F80F8C /* Kqueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1ECD60231DFEF51900F80F8C /* Kqueue.swift */; };
 		1EE887501D37D5FA003C8915 /* HttpResuestParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE8874F1D37D5FA003C8915 /* HttpResuestParser.swift */; };
 		1EE887541D37D656003C8915 /* TcpData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887531D37D656003C8915 /* TcpData.swift */; };
@@ -54,6 +55,7 @@
 		1EC829051D36746500916973 /* HttpServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpServer.swift; sourceTree = "<group>"; };
 		1ECB31091DFD82E7009C4D07 /* ThreadPoolConsumer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadPoolConsumer.swift; sourceTree = "<group>"; };
 		1ECB310B1DFD8F39009C4D07 /* ExampleOfThreadPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfThreadPool.swift; sourceTree = "<group>"; };
+		1ECD0E1F1E04FB8B00240EF7 /* BroadcastableWebSocketServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BroadcastableWebSocketServer.swift; sourceTree = "<group>"; };
 		1ECD60231DFEF51900F80F8C /* Kqueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kqueue.swift; sourceTree = "<group>"; };
 		1EE8874F1D37D5FA003C8915 /* HttpResuestParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpResuestParser.swift; sourceTree = "<group>"; };
 		1EE887531D37D656003C8915 /* TcpData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpData.swift; sourceTree = "<group>"; };
@@ -89,6 +91,8 @@
 		1E2CCFA21D48F278001EEA2D /* Examples */ = {
 			isa = PBXGroup;
 			children = (
+				1E73CB6F1D2BEE8400477236 /* ThreadTest */,
+				1E73CB6E1D2BEE7200477236 /* SocketTest */,
 				1E9D84AA1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift */,
 				1ECB310B1DFD8F39009C4D07 /* ExampleOfThreadPool.swift */,
 				1E35DCDF1D4A30A6008FFE4F /* ExampleOfTcp.swift */,
@@ -159,6 +163,14 @@
 			name = HttpLib;
 			sourceTree = "<group>";
 		};
+		1ECD0E1E1E04FB6500240EF7 /* WebSocketLib */ = {
+			isa = PBXGroup;
+			children = (
+				1ECD0E1F1E04FB8B00240EF7 /* BroadcastableWebSocketServer.swift */,
+			);
+			name = WebSocketLib;
+			sourceTree = "<group>";
+		};
 		"___RootGroup_" = {
 			isa = PBXGroup;
 			children = (
@@ -196,13 +208,12 @@
 		"_______Group_SwiftNetLib" /* SwiftNetLib */ = {
 			isa = PBXGroup;
 			children = (
+				1ECD0E1E1E04FB6500240EF7 /* WebSocketLib */,
 				1EC829041D36744B00916973 /* HttpLib */,
 				1E54C2811D33E5690042448F /* TcpLib */,
 				1E272B181E00616600299D68 /* EventLib */,
 				1E9D84A91D2F6C4100C5AA35 /* ThreadLib */,
 				1E5DC62C1E045E4300EB7A34 /* QueueLib */,
-				1E73CB6F1D2BEE8400477236 /* ThreadTest */,
-				1E73CB6E1D2BEE7200477236 /* SocketTest */,
 				1E2CCFA21D48F278001EEA2D /* Examples */,
 				__PBXFileRef_Sources/main.swift /* main.swift */,
 			);
@@ -283,6 +294,7 @@
 				1E272B151E004BC300299D68 /* ExampleOfKqueue.swift in Sources */,
 				1E2CCFA41D48F2A9001EEA2D /* Common.swift in Sources */,
 				1E9D84AB1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift in Sources */,
+				1ECD0E201E04FB8B00240EF7 /* BroadcastableWebSocketServer.swift in Sources */,
 				1EE887501D37D5FA003C8915 /* HttpResuestParser.swift in Sources */,
 				1ECB310A1DFD82E7009C4D07 /* ThreadPoolConsumer.swift in Sources */,
 			);
