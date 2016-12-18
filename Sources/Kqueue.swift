@@ -50,7 +50,7 @@ class Kqueue : EventManager {
         for i in 0..<Int(n) {
             let sock = kevList[i].ident
 
-            try callBack(socket: Int32(sock))
+            try callBack(handler: Int32(sock))
         }
     }
     

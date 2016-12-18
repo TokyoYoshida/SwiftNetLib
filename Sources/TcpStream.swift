@@ -1,31 +1,36 @@
 import C7
 
-class TcpStream : Stream {
+public class TcpStream : HandledStream {
     let client:TcpClient
 
     init(client: TcpClient) {
          self.client = client
     }
-    var closed: Bool { get {
+    
+    public var closed: Bool { get {
             print("check stream closed",client.closed)
             return client.closed
         }
     }
 
-    func send(_ data: Data, timingOut deadline: Double) throws {
+    public func send(_ data: Data, timingOut deadline: Double) throws {
         try client.tcpWrite(sendbuf: data) // Todo
     }
     
-    func receive(upTo byteCount: Int, timingOut deadline: Double) throws -> Data {  // Todo for timingOut support
+    public func receive(upTo byteCount: Int, timingOut deadline: Double) throws -> Data {  // Todo for timingOut support
         guard let tcpData = try client.tcpRead() else {
             throw StreamError.closedStream(data:Data())
         }
         return tcpData.data
     }
     
-    func flush(timingOut deadline: Double) throws {} // Todo
+    public func flush(timingOut deadline: Double) throws {} // Todo
 
-    func close() throws {
+    public func close() throws {
         try client.tcpClose()
+    }
+
+    public func getSocket() -> Int32 {
+        return self.client.getSocket();
     }
 }

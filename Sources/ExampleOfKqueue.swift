@@ -11,7 +11,7 @@ func kqueueLib() -> Int32
 //    var timeout = timespec()
 //    timeout.tv_nsec = 100000;
     let kqueue = try! Kqueue(maxEvents:100)
-    let ev = try! EventNotifier(eventManager: kqueue, tcpServer: tcpServer)
+    let ev = try! EventNotifier(eventManager: kqueue, server: tcpServer)
     
     try! ev.serverLoopExample()
     

@@ -4,11 +4,11 @@
     import Glibc
 #endif
 
-protocol SocketHandler {
+public protocol SocketHandler {
     func getSocket()->Int32
 }
 
-protocol EventManager {
+public protocol EventManager {
     func add(handler: SocketHandler) throws
     func delete(handler: SocketHandler) throws
     func wait(callBack: EventCallBackType) throws
@@ -18,7 +18,7 @@ protocol EventManager {
     func blockUntilIntoWaitingState()
 }
 
-typealias EventCallBackType = (socket: Int32) throws -> Void
+public typealias EventCallBackType = (handler: Int32) throws -> Void
 
 enum NotifyError: ErrorProtocol {
     case errno(errorNo: Int32)
@@ -27,12 +27,12 @@ enum NotifyError: ErrorProtocol {
 
 public class EventNotifier {
     let eventManager: EventManager
-    let tcpServer   : TcpServer
+    let server   : ServerType
     
-    init(eventManager: EventManager, tcpServer: TcpServer) throws {
+    init(eventManager: EventManager, server: ServerType) throws {
         self.eventManager = eventManager
-        self.tcpServer = tcpServer
-        try eventManager.add(handler: tcpServer)
+        self.server = server
+        try eventManager.add(handler: server)
     }
     
     func wait(callBack: EventCallBackType) throws {
@@ -66,8 +66,8 @@ public class EventNotifier {
     func serverLoopExample() throws {
         while(true){
             try eventManager.wait { sock in
-                if ( sock == self.tcpServer.getSocket() ){
-                    let client = self.tcpServer.tcpAccept()
+                if ( sock == self.server.getSocket() ){
+                    let client = try self.server.accept()
                     
                     try self.eventManager.add(handler: client)
                 } else {

@@ -1,10 +1,12 @@
 #if os(OSX)
     import Darwin
+    let os_accept = Darwin.accept
 #elseif os(Linux)
     import Glibc
+    let os_accept = Glibc.accept
 #endif
 
-public class TcpServer : SocketHandler {
+public class TcpServer : ServerType  {
     private var listenfd: Int32
     
     static let DEFAULT_HOST = "127.0.0.1"
@@ -53,7 +55,7 @@ public class TcpServer : SocketHandler {
         var peeraddr_len = socklen_t(sizeofValue(peeraddr))
         let peerPointer:UnsafeMutablePointer<sockaddr> = withUnsafePointer(&peeraddr) { UnsafeMutablePointer($0) }
 
-        connectfd = accept(listenfd, peerPointer, &peeraddr_len)
+        connectfd = os_accept(listenfd, peerPointer, &peeraddr_len)
         if (connectfd < 0) {
             print("error5")
         }
@@ -80,4 +82,10 @@ public class TcpServer : SocketHandler {
         }
     }
 
+    public func accept() throws -> HandledStream {         return TcpStream(client: tcpAccept())
+    }
+    
+    public func createStream(socket: Int32) -> HandledStream {
+        return TcpStream(client: TcpClient(socketfd: socket))
+    }
 }

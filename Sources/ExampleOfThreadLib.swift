@@ -65,7 +65,7 @@ func threadServerLib() -> Int32{
                             break
                         }
                         try client.tcpWrite(sendbuf: recvbuf)
-                        if let str = recvbuf.description  {
+                        if let str:String = recvbuf.description  {
                             print(str)
                         }
                     } catch {

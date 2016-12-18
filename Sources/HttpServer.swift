@@ -3,16 +3,24 @@ import S4
 import HTTPParser
 import Foundation
 
-protocol HttpServable {
+public protocol HttpServable {
     func serve() throws
 }
+
+public protocol HandledHost{
+    func accept() throws -> HandledStream
+}
+
+public protocol ServerType : SocketHandler,HandledHost {}
+
+public protocol HandledStream : Stream,SocketHandler {}
 
 typealias ErrorCallBack = (error: ErrorProtocol) -> Response?
 
 // typealias Responder = (request: Request) -> Response?
 
 class HttpServer : HttpServable {
-    private let tcpListener:     TcpServer
+    private let tcpListener:     ServerType
     private let parser:          HttpRequestParsable
     private let serializer:      HTTPResponseSerializable
     private let errorCallBack:   ErrorCallBack
@@ -23,7 +31,7 @@ class HttpServer : HttpServable {
     private let threadPoolQueue: AsyncQueue<SwiftThreadFunc>
     private var processors:      [Int32:HttpProcessor]
     
-    init(tcpListener:   TcpServer,
+    init(tcpListener:   ServerType,
          parser:        HttpRequestParsable = HttpRequestParser(),
          serializer:    HTTPResponseSerializable = HTTPResponseSerializer(),
          middleware:    [Middleware] = [],
@@ -43,7 +51,7 @@ class HttpServer : HttpServable {
         self.threadPoolQueue = threadPoolQueue
         self.processors = [Int32:HttpProcessor]()
     }
-    
+
     func serve() throws {
         print("process SingleSocket")
         while(true){
@@ -60,12 +68,10 @@ class HttpServer : HttpServable {
             if ( socket == self.tcpListener.getSocket() ){
                 try accept()
             } else {
-                var p = self.processors[socket]
+                let p = self.processors[socket]
 
-                if p == nil {
-                    let client = TcpClient(socketfd: socket)
-                    p = HttpProcessor(httpServer: self, client: client, middleware: self.middleware,callBack: self.responder)
-                    self.processors[socket] = p
+                guard p != nil else {
+                    assert(false, "This block is expected to be not called.")
                 }
 
                 try readAndResponse(processor: p!)
@@ -76,22 +82,24 @@ class HttpServer : HttpServable {
     }
     
     private func accept() throws {
-        let client = self.tcpListener.tcpAccept()
+        let client = try self.tcpListener.accept()
         print("accept and event add")
+        let p = HttpProcessor(httpServer: self, stream: client, middleware: self.middleware,callBack: self.responder)
+        self.processors[client.getSocket()] = p
         try self.eventNotifier.add(handler: client)
     }
     
     private func readAndResponse(processor: HttpProcessor) throws {
         
-        try self.eventNotifier.disable(handler: processor.client)
+        try self.eventNotifier.disable(handler: processor.stream)
         try self.threadPoolQueue.put {
             print("client thread read")
             do {
                 try processor.doProcessLoop(mutex: self.mutex)
-                if processor.client.closed {
-                    self.processors[processor.client.getSocket()] = nil
+                if processor.stream.closed {
+                    self.processors[processor.stream.getSocket()] = nil
                 } else {
-                    try self.eventNotifier.enable(handler: processor.client)
+                    try self.eventNotifier.enable(handler: processor.stream)
                 }
             } catch NotifyError.errno(let errno) {
                 print("exception in thread1 : \(errno)") //TODO
@@ -101,42 +109,22 @@ class HttpServer : HttpServable {
             }
         }
     }
-    
-//    func serve() throws {
-//        while(true){
-//            let client = self.tcpListener.tcpAccept()
-//
-//            _ = try Thread.new(detachState: ThreadUnit.DetachState.detached) {
-//                do {
-//                    let processor = HttpProcessor(httpServer: self, client: client, middleware: self.middleware,callBack: self.responder)
-//                    
-//                    try processor.doProcessLoop(mutex: self.mutex)
-//                    
-//                } catch {
-//                    print("error")
-//                }
-//            }
-//        }
-//    }
 
     func use(add_middleware: Middleware){
         middleware.append(add_middleware)
     }
     
-    
     class HttpProcessor {
         let httpServer: HttpServer
         let middleware: [Middleware]
         let callBack:   Responder
-        let client:     TcpClient
-        let stream:     TcpStream
+        let stream:     HandledStream
 
-        init(httpServer: HttpServer, client: TcpClient, middleware: [Middleware], callBack: Responder) {
+        init(httpServer: HttpServer, stream: HandledStream, middleware: [Middleware], callBack: Responder) {
             self.httpServer = httpServer
             self.middleware = middleware
             self.callBack   = callBack
-            self.client     = client
-            self.stream     = TcpStream(client: client)
+            self.stream     = stream
             print("HttpProcessor init")
         }
         
@@ -147,21 +135,27 @@ class HttpServer : HttpServable {
         func doProcessLoop(mutex: PosixMutex) throws {
             let readBuffer = self.httpServer.parser.createReadBuffer();
             
-            guard let data = try self.client.tcpRead() else {
-                try self.client.tcpClose()
+            guard let recvData:Data? = try self.stream.receive(upTo:TcpData.DEFAULT_BUFFER_SIZE) else {
+                try self.stream.close()
                 print("tcp close")
                 return
             }
             
-            print("lenbytes = \(data.lenBytes)")
+            guard let data = recvData else {
+                try self.stream.close()
+                print("tcp close")
+                return
+            }
             
-            guard data.lenBytes != 0 else {
-                try self.client.tcpClose()
+            print("lenbytes = \(data.bytes.count)")
+            
+            guard data.bytes.count != 0 else {
+                try self.stream.close()
                 print("tcp close2")
                 return
             }
             
-            if let str = data.description  {
+            if let str:String = data.description  {
                 print(str)
             }
 
@@ -171,11 +165,12 @@ class HttpServer : HttpServable {
                 
                     if let didUpgrade = response.didUpgrade {
                         try didUpgrade(request, self.stream)
-                        print("close client")
-                        try self.client.tcpClose()
+                        print("close strem")
+                        try self.stream.close()
                     }
             }
         }
+
         
         private func errorRespond(error: ErrorProtocol){
             if let response = self.httpServer.errorCallBack(error: error) {

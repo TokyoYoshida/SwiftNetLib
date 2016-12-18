@@ -26,28 +26,31 @@ func httpServer() -> Int32
     print("httpServer mode.")
 
     do {
-        let tcpServer = try TcpServer.tcpListen()
-        let errorCallBack:ErrorCallBack = { error in
-            return Response(body: Data("error page."))
-        }
-
-        let kqueue = try! Kqueue(maxEvents:100)
-        let ev = try! EventNotifier(eventManager: kqueue, tcpServer: tcpServer)
-
+        print("st0")
         let queue = AsyncQueue<SwiftThreadFunc>(size:100)
         
         let consumer = ThreadPoolConsumer(queue: queue)
         try! consumer.makePoolThreads(numOfThreads:7)
 
-        let server =     HttpServer(
-            tcpListener:   tcpServer,
+        let tcpServer = try TcpServer.tcpListen(port:5189)
+        let tlsServer = try TlsServer(server: tcpServer, certificate:"/tmp/ssl/cert.pem", privateKey: "/tmp/ssl/server.key" )
+        let errorCallBack:ErrorCallBack = { error in
+            return Response(body: Data("error page."))
+        }
+
+        let kqueue = try! Kqueue(maxEvents:100)
+        let ev = try! EventNotifier(eventManager: kqueue, server: tcpServer)
+
+
+        let server1 =     HttpServer(
+            tcpListener:   tlsServer,
             errorCallBack: errorCallBack,
             responder:      MyResponder(),
             eventNotifier: ev,
             threadPoolQueue: queue
         )
 
-        server.use(add_middleware: MyMiddleware())
+        server1.use(add_middleware: MyMiddleware())
 
         let wsServer = BroadcastableWebSocketServer { req, ws, wss in
             print("connected")
@@ -67,9 +70,37 @@ func httpServer() -> Int32
             print("wss num :\(wss.all.count)")
         }
 
-        server.use(add_middleware:wsServer)
+        print("st1")
 
-        try server.serve()
+
+        let tcpServer2 = try TcpServer.tcpListen()
+        
+        let kqueue2 = try! Kqueue(maxEvents:100)
+        let ev2 = try! EventNotifier(eventManager: kqueue2, server: tcpServer2)
+        
+        let server2 =     HttpServer(
+            tcpListener:   tcpServer2,
+            errorCallBack: errorCallBack,
+            responder:      MyResponder(),
+            eventNotifier: ev2,
+            threadPoolQueue: queue
+        )
+        
+        print("st2")
+
+        server2.use(add_middleware: MyMiddleware())
+        
+        server2.use(add_middleware:wsServer)
+
+        try queue.put {
+            do {
+                try server1.serve()
+            } catch {
+                print("error server1")
+            }
+        }
+        
+        try server2.serve()
     } catch {
         print("error")
     }

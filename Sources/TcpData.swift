@@ -8,14 +8,15 @@ import C7
 public protocol DataType {
     var data:         Data                       {get}
     var lenBytes:     Int                        {get}
-    var description : String?                    {get}
+    var description : String                    {get}
     var pointer:      UnsafeMutablePointer<Int8> {get}
 }
 
 public struct TcpData: DataType {
+    static let DEFAULT_BUFFER_SIZE = 1024
     public  var data:     Data
     
-    public init(size: Int = 1024) {
+    public init(size: Int = DEFAULT_BUFFER_SIZE) {
         let bytes = [Byte](repeating: 0, count: size)
         self.data = Data(bytes)
     }
@@ -39,7 +40,7 @@ public struct TcpData: DataType {
         return data.bytes.count * sizeofValue(data.bytes[0])
     }
     
-    public var description: String? {
+    public var description: String {
         return data.description
     }
 }
