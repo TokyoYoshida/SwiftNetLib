@@ -25,6 +25,8 @@ args[1..<args.count].forEach {
         ret = threadPool()
     case "kqueue":
         ret = kqueueLib()
+    case "lockFreeQueue":
+        ret = lockFreeQueue()
     default:
         print("error: Unknown command.")
     }

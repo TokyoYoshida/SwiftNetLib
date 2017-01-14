@@ -3,7 +3,32 @@ enum AsyncQueueError : ErrorProtocol {
     case abortedException
 }
 
-class AsyncQueue<T> {
+protocol AsyncQueueTypeBase {
+    associatedtype BT
+    func put(obj: BT) throws
+    func get() throws -> BT?
+    func close()
+    func abort()
+}
+
+class  AsyncQueueType<T> : AsyncQueueTypeBase{
+    typealias BT = T
+
+    func put(obj: BT) throws {
+        assert(false, "This block is expected to be not called.")
+    }
+    func get() throws -> BT? {
+        assert(false, "This block is expected to be not called.")
+    }
+    func close() {
+        assert(false, "This block is expected to be not called.")
+    }
+    func abort() {
+        assert(false, "This block is expected to be not called.")
+    }
+}
+
+class AsyncQueue<T> : AsyncQueueType<T> {
     var queue = [T]() // todo : list is more better than array
     let mutex = PosixMutex()
     var notifyNotFull = PosixCond()
@@ -18,7 +43,7 @@ class AsyncQueue<T> {
         aborted   = false
     }
     
-    func put(obj: T) throws {
+    override func put(obj: T) throws {
         mutex.lock()
 
         defer {
@@ -46,7 +71,7 @@ class AsyncQueue<T> {
         }
     }
     
-    func get() throws -> T? {
+    override func get() throws -> T? {
         mutex.lock()
         
         defer {
@@ -77,7 +102,7 @@ class AsyncQueue<T> {
         return ret
     }
 
-    func close(){
+    override func close(){
         mutex.lock()
         
         defer {
@@ -90,7 +115,7 @@ class AsyncQueue<T> {
         self.notifyNotFull.broadcast()
     }
 
-    func abort(){
+    override func abort(){
         mutex.lock()
         
         defer {

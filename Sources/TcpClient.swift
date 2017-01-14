@@ -60,6 +60,7 @@ public class TcpClient : SocketHandler{
         }
 
         guard size != 0 else {
+            closed = true
             return nil
         }
 

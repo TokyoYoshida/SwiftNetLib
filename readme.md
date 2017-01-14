@@ -3,6 +3,8 @@
 SwiftNetLib is TCP network library, in multi-thread support.
 It also provides a simple framework of Web applications that use these libraries.
 
+SwiftNetLib is in early development and pretty experimental.
+
 ## Build exsample application
 
 There is a sample of the Web server.
@@ -15,6 +17,13 @@ swift build
 ## Execution exsample application
 
 ### Web Server
+
+Place the server's private key and server certificate in the following location.
+```
+/tmp/ssl/server.key
+/tmp/ssl/cert.pem
+```
+
 ```
 .build/debug/SwiftNetLib httpServer
 ```

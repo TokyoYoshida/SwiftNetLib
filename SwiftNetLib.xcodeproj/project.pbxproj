@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E03CE7C1E23C776002643B7 /* LockFreeAsyncQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E03CE7B1E23C776002643B7 /* LockFreeAsyncQueue.swift */; };
 		1E272B151E004BC300299D68 /* ExampleOfKqueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E272B141E004BC300299D68 /* ExampleOfKqueue.swift */; };
 		1E272B171E0057ED00299D68 /* EventNotifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E272B161E0057ED00299D68 /* EventNotifier.swift */; };
 		1E2CCF9F1D48E7E7001EEA2D /* PosixThread.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */; };
@@ -35,11 +36,13 @@
 		1EE887561D37DED6003C8915 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887551D37DED6003C8915 /* Result.swift */; };
 		1EE887581D37E1A5003C8915 /* HttpResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887571D37E1A5003C8915 /* HttpResponseSerializer.swift */; };
 		1EE8875A1D37E1E9003C8915 /* TcpStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887591D37E1E9003C8915 /* TcpStream.swift */; };
+		1EFE2B4A1E29C8960091102F /* ExampleOfLockFreeQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFE2B491E29C8960091102F /* ExampleOfLockFreeQueue.swift */; };
 		__src_cc_ref_Sources/echoclient.swift /* EchoClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/echoclient.swift /* EchoClient.swift */; };
 		__src_cc_ref_Sources/main.swift /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/main.swift /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1E03CE7B1E23C776002643B7 /* LockFreeAsyncQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockFreeAsyncQueue.swift; sourceTree = "<group>"; };
 		1E272B141E004BC300299D68 /* ExampleOfKqueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfKqueue.swift; sourceTree = "<group>"; };
 		1E272B161E0057ED00299D68 /* EventNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventNotifier.swift; sourceTree = "<group>"; };
 		1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixThread.swift; sourceTree = "<group>"; };
@@ -68,6 +71,7 @@
 		1EE887551D37DED6003C8915 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		1EE887571D37E1A5003C8915 /* HttpResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpResponseSerializer.swift; sourceTree = "<group>"; };
 		1EE887591D37E1E9003C8915 /* TcpStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpStream.swift; sourceTree = "<group>"; };
+		1EFE2B491E29C8960091102F /* ExampleOfLockFreeQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfLockFreeQueue.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/echoclient.swift /* EchoClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoClient.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/main.swift /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
@@ -100,6 +104,7 @@
 				1E73CB6F1D2BEE8400477236 /* ThreadTest */,
 				1E73CB6E1D2BEE7200477236 /* SocketTest */,
 				1E9D84AA1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift */,
+				1EFE2B491E29C8960091102F /* ExampleOfLockFreeQueue.swift */,
 				1ECB310B1DFD8F39009C4D07 /* ExampleOfThreadPool.swift */,
 				1E35DCDF1D4A30A6008FFE4F /* ExampleOfTcp.swift */,
 				1E35DCDD1D4A3060008FFE4F /* ExampleOfWebServer.swift */,
@@ -127,6 +132,7 @@
 			isa = PBXGroup;
 			children = (
 				1E9FDE101DFCE6860089C532 /* AsyncQueue.swift */,
+				1E03CE7B1E23C776002643B7 /* LockFreeAsyncQueue.swift */,
 			);
 			name = QueueLib;
 			sourceTree = "<group>";
@@ -287,6 +293,7 @@
 				1E938A041E0645E700CA23B1 /* TlsServer.swift in Sources */,
 				__src_cc_ref_Sources/main.swift /* main.swift in Sources */,
 				1E35DCE01D4A30A6008FFE4F /* ExampleOfTcp.swift in Sources */,
+				1EFE2B4A1E29C8960091102F /* ExampleOfLockFreeQueue.swift in Sources */,
 				1EE887581D37E1A5003C8915 /* HttpResponseSerializer.swift in Sources */,
 				1E54C2831D33E59F0042448F /* TcpClient.swift in Sources */,
 				1E79F14A1D47C3B700DD8B33 /* PosixSemaphore.swift in Sources */,
@@ -298,6 +305,7 @@
 				1ECB310C1DFD8F39009C4D07 /* ExampleOfThreadPool.swift in Sources */,
 				1ECD60241DFEF51900F80F8C /* Kqueue.swift in Sources */,
 				1E35DCDE1D4A3060008FFE4F /* ExampleOfWebServer.swift in Sources */,
+				1E03CE7C1E23C776002643B7 /* LockFreeAsyncQueue.swift in Sources */,
 				1EE8875A1D37E1E9003C8915 /* TcpStream.swift in Sources */,
 				1E2CCFA11D48F229001EEA2D /* PosixMutex.swift in Sources */,
 				1E272B171E0057ED00299D68 /* EventNotifier.swift in Sources */,

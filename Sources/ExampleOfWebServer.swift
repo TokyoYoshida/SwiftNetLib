@@ -27,7 +27,7 @@ func httpServer() -> Int32
 
     do {
         print("st0")
-        let queue = AsyncQueue<SwiftThreadFunc>(size:100)
+        let queue = LockFreeAsyncQueue<SwiftThreadFunc>()
         
         let consumer = ThreadPoolConsumer(queue: queue)
         try! consumer.makePoolThreads(numOfThreads:7)

@@ -28,7 +28,7 @@ class HttpServer : HttpServable {
     private var middleware:      [Middleware]
     private let responder:       Responder
     private let eventNotifier:   EventNotifier
-    private let threadPoolQueue: AsyncQueue<SwiftThreadFunc>
+    private let threadPoolQueue: AsyncQueueType<SwiftThreadFunc>
     private var processors:      [Int32:HttpProcessor]
     
     init(tcpListener:   ServerType,
@@ -38,7 +38,7 @@ class HttpServer : HttpServable {
          errorCallBack: ErrorCallBack,
          responder:     Responder,
          eventNotifier:  EventNotifier,
-         threadPoolQueue:  AsyncQueue<SwiftThreadFunc>
+         threadPoolQueue:  AsyncQueueType<SwiftThreadFunc>
         ) {
 
         self.tcpListener     = tcpListener
@@ -103,6 +103,8 @@ class HttpServer : HttpServable {
                 }
             } catch NotifyError.errno(let errno) {
                 print("exception in thread1 : \(errno)") //TODO
+            } catch StreamError.closedStream {
+                self.processors[processor.stream.getSocket()] = nil
             } catch {
                 print("exception in thread1") //TODO
                 
@@ -119,12 +121,15 @@ class HttpServer : HttpServable {
         let middleware: [Middleware]
         let callBack:   Responder
         let stream:     HandledStream
+        let readBuffer: ReadBuffer
+        
 
         init(httpServer: HttpServer, stream: HandledStream, middleware: [Middleware], callBack: Responder) {
             self.httpServer = httpServer
             self.middleware = middleware
             self.callBack   = callBack
             self.stream     = stream
+            self.readBuffer = httpServer.parser.createReadBuffer();
             print("HttpProcessor init")
         }
         
@@ -133,8 +138,7 @@ class HttpServer : HttpServable {
         }
         
         func doProcessLoop(mutex: PosixMutex) throws {
-            let readBuffer = self.httpServer.parser.createReadBuffer();
-            
+            print(self.stream.closed)
             guard let recvData:Data? = try self.stream.receive(upTo:TcpData.DEFAULT_BUFFER_SIZE) else {
                 try self.stream.close()
                 print("tcp close")
@@ -159,8 +163,8 @@ class HttpServer : HttpServable {
                 print(str)
             }
 
-            self.httpServer.parser.parse(readBuffer: readBuffer, readData: data) { [unowned self] request in
-                    let response = try self.middleware.chain(to: self.callBack).respond(to: request)
+            self.httpServer.parser.parse(readBuffer: self.readBuffer, readData: data) { [unowned self] request in
+                let response = try self.middleware.chain(to: self.callBack).respond(to: request)
                     self.serialize(response: response)
                 
                     if let didUpgrade = response.didUpgrade {
@@ -168,6 +172,11 @@ class HttpServer : HttpServable {
                         print("close strem")
                         try self.stream.close()
                     }
+                
+                if !request.isKeepAlive {
+                    try self.stream.close()
+                }
+                
             }
         }
 

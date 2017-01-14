@@ -8,7 +8,6 @@ public class TcpStream : HandledStream {
     }
     
     public var closed: Bool { get {
-            print("check stream closed",client.closed)
             return client.closed
         }
     }

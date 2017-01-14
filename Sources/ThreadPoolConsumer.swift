@@ -1,9 +1,9 @@
 
 class ThreadPoolConsumer {
-    var queue: AsyncQueue<SwiftThreadFunc>
+    var queue: AsyncQueueType<SwiftThreadFunc>
     var threads = ThreadUnitContainer()
     
-    init(queue: AsyncQueue<SwiftThreadFunc>){
+    init(queue: AsyncQueueType<SwiftThreadFunc>){
         self.queue = queue
     }
     
