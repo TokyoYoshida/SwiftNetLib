@@ -24,12 +24,11 @@ class HttpServer : HttpServable {
     private let parser:          HttpRequestParsable
     private let serializer:      HTTPResponseSerializable
     private let errorCallBack:   ErrorCallBack
-    private let mutex =          PosixMutex()
     private var middleware:      [Middleware]
     private let responder:       Responder
     private let eventNotifier:   EventNotifier
     private let threadPoolQueue: AsyncQueueType<SwiftThreadFunc>
-    private var processors:      [Int32:HttpProcessor]
+    private let procKeeper = ProcessorKeeper()
     
     init(tcpListener:   ServerType,
          parser:        HttpRequestParsable = HttpRequestParser(),
@@ -40,7 +39,6 @@ class HttpServer : HttpServable {
          eventNotifier:  EventNotifier,
          threadPoolQueue:  AsyncQueueType<SwiftThreadFunc>
         ) {
-
         self.tcpListener     = tcpListener
         self.parser          = parser
         self.serializer      = serializer
@@ -49,14 +47,14 @@ class HttpServer : HttpServable {
         self.errorCallBack   = errorCallBack
         self.eventNotifier   = eventNotifier
         self.threadPoolQueue = threadPoolQueue
-        self.processors = [Int32:HttpProcessor]()
     }
 
     func serve() throws {
         print("process SingleSocket")
         while(true){
-            eventNotifier.blockUntilIntoWaitingState()
+            print("waiting..")
             try eventNotifier.wait { socket in
+//                try self.eventNotifier.disable(socket: socket)
                 self.doAcceptOrRead(socket: socket)
             }
         }
@@ -67,19 +65,14 @@ class HttpServer : HttpServable {
             if ( socket == self.tcpListener.getSocket() ){
                 try accept()
             } else {
-                let p = sync(mutex:self.mutex){
-                    return self.processors[socket]
-                }
-
-                guard p != nil else {
+                try self.eventNotifier.disable(socket: socket)
+                guard let p = procKeeper.get(socket: socket) else {
                     print("socket already closed.")
-                    sync(mutex: self.mutex) {
-                        self.processors[socket] = nil
-                    }
+                    procKeeper.delete(socket: socket)
                     return
                 }
 
-                try readAndResponse(processor: p!)
+                try readAndResponse(processor: p)
             }
         } catch {
             print("exception occured") // TODO
@@ -90,31 +83,23 @@ class HttpServer : HttpServable {
         let client = try self.tcpListener.accept()
         print("accept and event add")
         let p = HttpProcessor(httpServer: self, stream: client, middleware: self.middleware,callBack: self.responder)
-        sync(mutex: self.mutex) {
-            self.processors[client.getSocket()] = p
-        }
-        try self.eventNotifier.add(handler: client)
+        procKeeper.add(socket: client.getSocket(), processor: p)
+        try self.eventNotifier.add(socket: client.getSocket())
     }
     
     private func readAndResponse(processor: HttpProcessor) throws {
-        
-        try self.eventNotifier.disable(handler: processor.stream)
         try self.threadPoolQueue.put {
             do {
-                try processor.doProcessLoop(mutex: self.mutex)
+                try processor.doProcessLoop()
                 if processor.stream.closed {
-                    sync(mutex: self.mutex) {
-                        self.processors[processor.stream.getSocket()] = nil
-                    }
+                    self.procKeeper.delete(socket: processor.stream.getSocket())
                 } else {
-                    try self.eventNotifier.enable(handler: processor.stream)
+                    try self.eventNotifier.enable(socket: processor.stream.getSocket())
                 }
             } catch NotifyError.errno(let errno) {
                 print("exception in thread1 : \(errno)") //TODO
             } catch StreamError.closedStream(_) {
-                sync(mutex: self.mutex) {
-                    self.processors[processor.stream.getSocket()] = nil
-                }
+                self.procKeeper.delete(socket: processor.stream.getSocket())
             } catch (Error.errno(let errno) ){
                 print("exception in thread1. errno = \(errno)") //TODO
             } catch (let err){
@@ -148,7 +133,7 @@ class HttpServer : HttpServable {
             print("HttpProcessor deinit")
         }
         
-        func doProcessLoop(mutex: PosixMutex) throws {
+        func doProcessLoop() throws {
             let data = try self.stream.receive(upTo:TcpData.DEFAULT_BUFFER_SIZE)
             
             print("lenbytes = \(data.bytes.count)")
@@ -194,5 +179,27 @@ class HttpServer : HttpServable {
             }
         }
     }
+    
+    class ProcessorKeeper {
+        private let mutex = PosixMutex()
+        var processors = [Int32:HttpProcessor]()
+        
+        func add(socket: Int32, processor: HttpProcessor){
+            sync(mutex: mutex){
+                self.processors[socket] = processor
+            }
+        }
+        
+        func delete(socket: Int32){
+            sync(mutex: mutex){
+                self.processors[socket] = nil
+            }
+        }
 
+        func get(socket: Int32) -> HttpProcessor? {
+            return sync(mutex: mutex){
+                return self.processors[socket]
+            }
+        }
+    }
 }

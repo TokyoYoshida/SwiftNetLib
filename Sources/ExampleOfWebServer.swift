@@ -45,7 +45,7 @@ func httpServer() -> Int32
         let ev = try! EventNotifier(eventManager: kqueue, server: tcpServer)
 
 
-        let server1 =     HttpServer(
+        let server1 = HttpServer(
             tcpListener:   tlsServer,
             errorCallBack: errorCallBack,
             responder:      MyResponder(),
@@ -81,7 +81,7 @@ func httpServer() -> Int32
         let kqueue2 = try! Kqueue(maxEvents:100)
         let ev2 = try! EventNotifier(eventManager: kqueue2, server: tcpServer2)
         
-        let server2 =     HttpServer(
+        let server2 = HttpServer(
             tcpListener:   tcpServer2,
             errorCallBack: errorCallBack,
             responder:      MyResponder(),
@@ -105,8 +105,9 @@ func httpServer() -> Int32
         
         try server2.serve()
         print("error file : \(#file) line : \(#line)")
-    } catch {
+    } catch (let err){
         print("error file : \(#file) line : \(#line)")
+        print("exception in thread1. errtype = \(err.dynamicType)") //TODO
     }
 
     return 0

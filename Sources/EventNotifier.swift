@@ -9,13 +9,12 @@ public protocol SocketHandler {
 }
 
 public protocol EventManager {
-    func add(handler: SocketHandler) throws
-    func delete(handler: SocketHandler) throws
+    func add(socket: Int32) throws
+    func delete(socket: Int32) throws
     func wait(callBack: EventCallBackType) throws
-    func disable(handler: SocketHandler) throws
-    func enable(handler: SocketHandler) throws
-    func isWaiting() -> Bool
-    func blockUntilIntoWaitingState()
+    func clear(socket: Int32) throws
+    func disable(socket: Int32) throws
+    func enable(socket: Int32) throws
 }
 
 public typealias EventCallBackType = (handler: Int32) throws -> Void
@@ -32,35 +31,31 @@ public class EventNotifier {
     init(eventManager: EventManager, server: ServerType) throws {
         self.eventManager = eventManager
         self.server = server
-        try eventManager.add(handler: server)
+        try eventManager.add(socket: server.getSocket())
     }
     
     func wait(callBack: EventCallBackType) throws {
         try eventManager.wait(callBack: callBack)
     }
 
-    func add(handler: SocketHandler) throws {
-        try eventManager.add(handler: handler)
+    func add(socket: Int32) throws {
+        try eventManager.add(socket: socket)
     }
 
-    func delete(handler: SocketHandler) throws {
-        try eventManager.delete(handler: handler)
-    }
-
-    func disable(handler: SocketHandler) throws {
-        try eventManager.disable(handler: handler)
+    func delete(socket: Int32) throws {
+        try eventManager.delete(socket: socket)
     }
     
-    func enable(handler: SocketHandler) throws {
-        try eventManager.enable(handler: handler)
-    }
-
-    func isWaiting() -> Bool{
-        return eventManager.isWaiting()
+    func clear(socket: Int32) throws {
+        try eventManager.clear(socket: socket)
     }
     
-    func blockUntilIntoWaitingState() {
-        return eventManager.blockUntilIntoWaitingState()
+    func disable(socket: Int32) throws {
+        try eventManager.disable(socket: socket)
+    }
+    
+    func enable(socket: Int32) throws {
+        try eventManager.enable(socket: socket)
     }
 
     func serverLoopExample() throws {
@@ -69,7 +64,7 @@ public class EventNotifier {
                 if ( sock == self.server.getSocket() ){
                     let client = try self.server.accept()
                     
-                    try self.eventManager.add(handler: client)
+                    try self.eventManager.add(socket: client.getSocket())
                 } else {
                     let client = TcpClient(socketfd: Int32(sock))
                     

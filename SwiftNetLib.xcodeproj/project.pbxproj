@@ -68,7 +68,7 @@
 		1ECB31091DFD82E7009C4D07 /* ThreadPoolConsumer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadPoolConsumer.swift; sourceTree = "<group>"; };
 		1ECB310B1DFD8F39009C4D07 /* ExampleOfThreadPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfThreadPool.swift; sourceTree = "<group>"; };
 		1ECD0E1F1E04FB8B00240EF7 /* BroadcastableWebSocketServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BroadcastableWebSocketServer.swift; sourceTree = "<group>"; };
-		1ECD60231DFEF51900F80F8C /* Kqueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Kqueue.swift; sourceTree = "<group>"; };
+		1ECD60231DFEF51900F80F8C /* Kqueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = Kqueue.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1EE8874F1D37D5FA003C8915 /* HttpResuestParser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpResuestParser.swift; sourceTree = "<group>"; };
 		1EE887531D37D656003C8915 /* TcpData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpData.swift; sourceTree = "<group>"; };
 		1EE887551D37DED6003C8915 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
