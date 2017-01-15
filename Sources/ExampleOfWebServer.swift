@@ -25,9 +25,12 @@ func httpServer() -> Int32
 {
     print("httpServer mode.")
 
+    setSignal()
+
     do {
-        print("st0")
+
         let queue = LockFreeAsyncQueue<SwiftThreadFunc>()
+//        let queue = AsyncQueue<SwiftThreadFunc>(size: 100)
         
         let consumer = ThreadPoolConsumer(queue: queue)
         try! consumer.makePoolThreads(numOfThreads:7)
@@ -102,7 +105,7 @@ func httpServer() -> Int32
         
         try server2.serve()
     } catch {
-        print("error")
+        print("error file : \(#file) line : \(#line)")
     }
 
     return 0

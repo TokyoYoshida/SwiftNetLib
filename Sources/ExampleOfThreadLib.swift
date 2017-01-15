@@ -69,13 +69,13 @@ func threadServerLib() -> Int32{
                             print(str)
                         }
                     } catch {
-                        print("error")
+                        print("error file : \(#file) line : \(#line)")
                     }
                 }
             }
         }
     } catch {
-        print("error")
+        print("error file : \(#file) line : \(#line)")
     }
     
     return 0

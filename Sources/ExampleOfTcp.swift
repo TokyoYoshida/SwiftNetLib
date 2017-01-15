@@ -23,7 +23,7 @@ func tcpLibClient() -> Int32
             fputs(recvbuf.pointer, stdout)
         }
     } catch {
-        print("error")
+        print("error file : \(#file) line : \(#line)")
     }
     
     return 0

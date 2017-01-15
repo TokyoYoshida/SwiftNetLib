@@ -122,6 +122,6 @@ public func swifty(threadFunc: SwiftThreadFunc) {
     do {
     _ = try Thread.new(detachState: ThreadUnit.DetachState.detached,threadFunc: threadFunc)
     } catch {
-        print("error")
+        print("error file : \(#file) line : \(#line)")
     }
 }

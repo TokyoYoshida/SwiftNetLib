@@ -127,7 +127,7 @@ func thread() -> Int32
         thdat[i].start  = _start!
         rtn = pthread_create(&thdat[i].th, nil, thread_function, &thdat[i])
         if (rtn != 0) {
-            print("error")
+            print("error file : \(#file) line : \(#line)")
 //            fprintf(stderr, "pthread_create() #%0d failed for %d.", i, rtn)
 //            return EXIT_FAILURE
         }

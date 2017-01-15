@@ -12,7 +12,7 @@ func lockFreeQueue() -> Int32
 //    do {
 //    try q.get()
 //    }catch{
-//        print("error")
+//        print("error file : \(#file) line : \(#line)")
 //    }
     do {
         try q.put(obj: 1)
@@ -22,7 +22,7 @@ func lockFreeQueue() -> Int32
         let v2 = try q.get()
         print("value = \(v2)")
     } catch {
-        print("error")
+        print("error file : \(#file) line : \(#line)")
     }
     
     // Example with Thread
