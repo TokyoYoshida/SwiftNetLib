@@ -16,10 +16,6 @@ public class ThreadUnit  {
         case joinable
     }
 
-    public enum Error: ErrorProtocol {
-        case errno(errorNo: Int32)
-    }
-
     init(detachState: DetachState = .joinable, threadFunc: SwiftThreadFunc) throws {
 
         print("thread init")

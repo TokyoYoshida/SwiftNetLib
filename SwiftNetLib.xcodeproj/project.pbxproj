@@ -37,13 +37,14 @@
 		1EE887561D37DED6003C8915 /* Result.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887551D37DED6003C8915 /* Result.swift */; };
 		1EE887581D37E1A5003C8915 /* HttpResponseSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887571D37E1A5003C8915 /* HttpResponseSerializer.swift */; };
 		1EE8875A1D37E1E9003C8915 /* TcpStream.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EE887591D37E1E9003C8915 /* TcpStream.swift */; };
+		1EFAD4631E2B178100E5EF77 /* Error.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFAD4621E2B178100E5EF77 /* Error.swift */; };
 		1EFE2B4A1E29C8960091102F /* ExampleOfLockFreeQueue.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EFE2B491E29C8960091102F /* ExampleOfLockFreeQueue.swift */; };
 		__src_cc_ref_Sources/echoclient.swift /* EchoClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/echoclient.swift /* EchoClient.swift */; };
 		__src_cc_ref_Sources/main.swift /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = __PBXFileRef_Sources/main.swift /* main.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1E03CE7B1E23C776002643B7 /* LockFreeAsyncQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LockFreeAsyncQueue.swift; sourceTree = "<group>"; };
+		1E03CE7B1E23C776002643B7 /* LockFreeAsyncQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = LockFreeAsyncQueue.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1E272B141E004BC300299D68 /* ExampleOfKqueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfKqueue.swift; sourceTree = "<group>"; };
 		1E272B161E0057ED00299D68 /* EventNotifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventNotifier.swift; sourceTree = "<group>"; };
 		1E2CCF9E1D48E7E7001EEA2D /* PosixThread.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = PosixThread.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
@@ -52,7 +53,7 @@
 		1E35DCDD1D4A3060008FFE4F /* ExampleOfWebServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ExampleOfWebServer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1E35DCDF1D4A30A6008FFE4F /* ExampleOfTcp.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ExampleOfTcp.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1E5058DD1D28E4D60001E726 /* EchoServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EchoServer.swift; sourceTree = "<group>"; };
-		1E54C2821D33E59F0042448F /* TcpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpClient.swift; sourceTree = "<group>"; };
+		1E54C2821D33E59F0042448F /* TcpClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TcpClient.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1E54C2841D33EE840042448F /* TcpServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpServer.swift; sourceTree = "<group>"; };
 		1E73CB6C1D2BEE5D00477236 /* ThreadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ThreadTest.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1E79F1491D47C3B700DD8B33 /* PosixSemaphore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixSemaphore.swift; sourceTree = "<group>"; };
@@ -63,7 +64,7 @@
 		1E9D84AA1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ExampleOfThreadLib.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1E9FDE0E1DFCE47E0089C532 /* PosixCond.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PosixCond.swift; sourceTree = "<group>"; };
 		1E9FDE101DFCE6860089C532 /* AsyncQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncQueue.swift; sourceTree = "<group>"; };
-		1EC829051D36746500916973 /* HttpServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpServer.swift; sourceTree = "<group>"; };
+		1EC829051D36746500916973 /* HttpServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = HttpServer.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		1ECB31091DFD82E7009C4D07 /* ThreadPoolConsumer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThreadPoolConsumer.swift; sourceTree = "<group>"; };
 		1ECB310B1DFD8F39009C4D07 /* ExampleOfThreadPool.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExampleOfThreadPool.swift; sourceTree = "<group>"; };
 		1ECD0E1F1E04FB8B00240EF7 /* BroadcastableWebSocketServer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BroadcastableWebSocketServer.swift; sourceTree = "<group>"; };
@@ -72,7 +73,8 @@
 		1EE887531D37D656003C8915 /* TcpData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpData.swift; sourceTree = "<group>"; };
 		1EE887551D37DED6003C8915 /* Result.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Result.swift; sourceTree = "<group>"; };
 		1EE887571D37E1A5003C8915 /* HttpResponseSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HttpResponseSerializer.swift; sourceTree = "<group>"; };
-		1EE887591D37E1E9003C8915 /* TcpStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TcpStream.swift; sourceTree = "<group>"; };
+		1EE887591D37E1E9003C8915 /* TcpStream.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TcpStream.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
+		1EFAD4621E2B178100E5EF77 /* Error.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Error.swift; sourceTree = "<group>"; };
 		1EFE2B491E29C8960091102F /* ExampleOfLockFreeQueue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = ExampleOfLockFreeQueue.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		__PBXFileRef_Package.swift /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 		__PBXFileRef_Sources/echoclient.swift /* EchoClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EchoClient.swift; sourceTree = "<group>"; };
@@ -196,6 +198,14 @@
 			name = WebSocketLib;
 			sourceTree = "<group>";
 		};
+		1EFAD45F1E2B176100E5EF77 /* Error */ = {
+			isa = PBXGroup;
+			children = (
+				1EFAD4621E2B178100E5EF77 /* Error.swift */,
+			);
+			name = Error;
+			sourceTree = "<group>";
+		};
 		"___RootGroup_" = {
 			isa = PBXGroup;
 			children = (
@@ -240,6 +250,7 @@
 				1E272B181E00616600299D68 /* EventLib */,
 				1E9D84A91D2F6C4100C5AA35 /* ThreadLib */,
 				1E5DC62C1E045E4300EB7A34 /* QueueLib */,
+				1EFAD45F1E2B176100E5EF77 /* Error */,
 				1E2CCFA21D48F278001EEA2D /* Examples */,
 				__PBXFileRef_Sources/main.swift /* main.swift */,
 			);
@@ -322,6 +333,7 @@
 				1E2CCFA11D48F229001EEA2D /* PosixMutex.swift in Sources */,
 				1E272B171E0057ED00299D68 /* EventNotifier.swift in Sources */,
 				1E73CB6D1D2BEE5D00477236 /* ThreadTest.swift in Sources */,
+				1EFAD4631E2B178100E5EF77 /* Error.swift in Sources */,
 				1E272B151E004BC300299D68 /* ExampleOfKqueue.swift in Sources */,
 				1E2CCFA41D48F2A9001EEA2D /* Common.swift in Sources */,
 				1E9D84AB1D2F6C5300C5AA35 /* ExampleOfThreadLib.swift in Sources */,

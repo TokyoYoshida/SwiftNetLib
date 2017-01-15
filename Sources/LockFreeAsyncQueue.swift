@@ -121,8 +121,6 @@ class LockFreeAsyncQueue<T>: AsyncQueueType<T> {
             let lastp = self.tail
             let nextp = first.next
             
-            print("get block")
-
             if(aborted) {
                 throw AsyncQueueError.abortedException
             }

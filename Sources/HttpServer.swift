@@ -93,7 +93,6 @@ class HttpServer : HttpServable {
         
         try self.eventNotifier.disable(handler: processor.stream)
         try self.threadPoolQueue.put {
-            print("client thread read")
             do {
                 try processor.doProcessLoop(mutex: self.mutex)
                 if processor.stream.closed {
@@ -103,11 +102,13 @@ class HttpServer : HttpServable {
                 }
             } catch NotifyError.errno(let errno) {
                 print("exception in thread1 : \(errno)") //TODO
-            } catch StreamError.closedStream {
+            } catch StreamError.closedStream(_) {
                 self.processors[processor.stream.getSocket()] = nil
-            } catch {
-                print("exception in thread1") //TODO
-                
+                try! processor.stream.close()
+            } catch (Error.errno(let errno) ){
+                print("exception in thread1. errno = \(errno)") //TODO
+            } catch (let err){
+                print("exception in thread1. errtype = \(err.dynamicType)") //TODO
             }
         }
     }
@@ -138,18 +139,7 @@ class HttpServer : HttpServable {
         }
         
         func doProcessLoop(mutex: PosixMutex) throws {
-            print(self.stream.closed)
-            guard let recvData:Data? = try self.stream.receive(upTo:TcpData.DEFAULT_BUFFER_SIZE) else {
-                try self.stream.close()
-                print("tcp close")
-                return
-            }
-            
-            guard let data = recvData else {
-                try self.stream.close()
-                print("tcp close")
-                return
-            }
+            let data = try self.stream.receive(upTo:TcpData.DEFAULT_BUFFER_SIZE)
             
             print("lenbytes = \(data.bytes.count)")
             
@@ -159,9 +149,9 @@ class HttpServer : HttpServable {
                 return
             }
             
-            if let str:String = data.description  {
-                print(str)
-            }
+//            if let str:String = data.description  {
+//                print(str)
+//            }
 
             self.httpServer.parser.parse(readBuffer: self.readBuffer, readData: data) { [unowned self] request in
                 let response = try self.middleware.chain(to: self.callBack).respond(to: request)
@@ -179,7 +169,6 @@ class HttpServer : HttpServable {
                 
             }
         }
-
         
         private func errorRespond(error: ErrorProtocol){
             if let response = self.httpServer.errorCallBack(error: error) {
@@ -191,7 +180,7 @@ class HttpServer : HttpServable {
             do {
                 try self.httpServer.serializer.serialize(response: response, stream: self.stream)
             } catch {
-                assert(false, "This code path is expected to be not called.")
+                print("serialize error.") // TODO
             }
         }
     }

@@ -11,10 +11,6 @@ public class TlsServer : ServerType  {
     let server: ServerType
     let sslContext: SSLServerContext
     
-    public enum Error: ErrorProtocol {
-        case errno(errorNo: Int32)
-    }
-    
     public init(server: ServerType,certificate: String, privateKey: String, certificateChain: String? = nil)  throws {
         self.server = server
         sslContext = try SSLServerContext(

@@ -104,6 +104,7 @@ func httpServer() -> Int32
         }
         
         try server2.serve()
+        print("error file : \(#file) line : \(#line)")
     } catch {
         print("error file : \(#file) line : \(#line)")
     }

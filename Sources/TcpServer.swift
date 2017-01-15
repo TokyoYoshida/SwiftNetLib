@@ -12,10 +12,6 @@ public class TcpServer : ServerType  {
     static let DEFAULT_HOST = "127.0.0.1"
     static let DEFAULT_PORT:UInt16 = 5188
 
-    public enum Error: ErrorProtocol {
-        case errno(errorNo: Int32)
-    }
-    
     public init(host: String, port: UInt16) throws {
         listenfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
         if (listenfd < 0) {

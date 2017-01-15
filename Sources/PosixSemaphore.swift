@@ -33,10 +33,6 @@ public class PosixSemaphore  {
     private var semaphoreName: String
     private var handle:        UnsafeMutablePointer<sem_t>!
     
-    public enum Error: ErrorProtocol {
-        case errno(errorNo: Int32)
-    }
-    
     init(semaphoreName: String = "/sem\(String.randomAlphabetNumberStringWithLength(length: 20))", initialValue: UInt32 = 0) throws {
         
         self.semaphoreName = semaphoreName

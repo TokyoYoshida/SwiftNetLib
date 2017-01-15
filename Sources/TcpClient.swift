@@ -13,11 +13,6 @@ public class TcpClient : SocketHandler{
     static let DEFAULT_HOST        = "127.0.0.1"
     static let DEFAULT_PORT:UInt16 = 5188
     
-    public enum Error: ErrorProtocol {
-        case errno(errorNo: Int32)
-    }
-    
-
     init(socketfd: Int32){
         self.socketfd = socketfd
         closed = false
@@ -55,7 +50,6 @@ public class TcpClient : SocketHandler{
         let size = read(self.socketfd, recvbuf.pointer ,recvbuf.lenBytes)
         
         guard size != -1 else {
-            print(errno)
             throw Error.errno(errorNo: errno)
         }
 
