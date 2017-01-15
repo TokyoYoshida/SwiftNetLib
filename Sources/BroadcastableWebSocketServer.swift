@@ -7,7 +7,7 @@ public class WebSocketContainer {
     private let mutex = PosixMutex()
     
     public func add(_ websocket: WebSocket) -> Int{
-        return synchronized(mutex: mutex) {
+        return sync(mutex: mutex) {
             let r = self.key
 
             self.all[self.key] = websocket
@@ -19,7 +19,7 @@ public class WebSocketContainer {
     }
 
     public func delete(_ delKey: Int){
-        return synchronized(mutex: mutex) {
+        return sync(mutex: mutex) {
             self.all[delKey] = nil
         }
     }

@@ -90,7 +90,7 @@ public class ThreadUnitContainer {
     func add(detachState: ThreadUnit.DetachState = ThreadUnit.DetachState.joinable,  threadFunc: SwiftThreadFunc) throws  -> ThreadUnit {
         let newThread = try ThreadUnit(threadFunc: threadFunc)
 
-        synchronized(mutex: mutex) { [unowned self] in
+        sync(mutex: mutex) { [unowned self] in
             self.threadUnits.append(newThread)
         }
 

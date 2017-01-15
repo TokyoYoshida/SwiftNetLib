@@ -63,15 +63,20 @@ class HttpServer : HttpServable {
     }
 
     private func doAcceptOrRead(socket: Int32){
-
         do {
             if ( socket == self.tcpListener.getSocket() ){
                 try accept()
             } else {
-                let p = self.processors[socket]
+                let p = sync(mutex:self.mutex){
+                    return self.processors[socket]
+                }
 
                 guard p != nil else {
-                    assert(false, "This block is expected to be not called.")
+                    print("socket already closed.")
+                    sync(mutex: self.mutex) {
+                        self.processors[socket] = nil
+                    }
+                    return
                 }
 
                 try readAndResponse(processor: p!)
@@ -85,7 +90,9 @@ class HttpServer : HttpServable {
         let client = try self.tcpListener.accept()
         print("accept and event add")
         let p = HttpProcessor(httpServer: self, stream: client, middleware: self.middleware,callBack: self.responder)
-        self.processors[client.getSocket()] = p
+        sync(mutex: self.mutex) {
+            self.processors[client.getSocket()] = p
+        }
         try self.eventNotifier.add(handler: client)
     }
     
@@ -96,15 +103,18 @@ class HttpServer : HttpServable {
             do {
                 try processor.doProcessLoop(mutex: self.mutex)
                 if processor.stream.closed {
-                    self.processors[processor.stream.getSocket()] = nil
+                    sync(mutex: self.mutex) {
+                        self.processors[processor.stream.getSocket()] = nil
+                    }
                 } else {
                     try self.eventNotifier.enable(handler: processor.stream)
                 }
             } catch NotifyError.errno(let errno) {
                 print("exception in thread1 : \(errno)") //TODO
             } catch StreamError.closedStream(_) {
-                self.processors[processor.stream.getSocket()] = nil
-                try! processor.stream.close()
+                sync(mutex: self.mutex) {
+                    self.processors[processor.stream.getSocket()] = nil
+                }
             } catch (Error.errno(let errno) ){
                 print("exception in thread1. errno = \(errno)") //TODO
             } catch (let err){

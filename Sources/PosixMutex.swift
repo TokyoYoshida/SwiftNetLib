@@ -29,7 +29,7 @@ public class PosixMutex {
 }
 
 private let globalMutex = PosixMutex()
-public func synchronized<A>(mutex: PosixMutex = globalMutex,  syncFunc:  () -> A) -> A {
+public func sync<A>(mutex: PosixMutex = globalMutex,  syncFunc:  () -> A) -> A {
     mutex.lock()
     
     defer {

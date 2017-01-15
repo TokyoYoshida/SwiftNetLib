@@ -14,5 +14,5 @@ func signalHandler(sign: Int32){
 
 func setSignal() {
 //    signal(SIGINT, signalHandler)
-    signal(SIGPIPE, signalHandler)
+    signal(SIGPIPE, SIG_IGN)
 }
