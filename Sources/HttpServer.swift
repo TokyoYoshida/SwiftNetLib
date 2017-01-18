@@ -28,7 +28,8 @@ class HttpServer : HttpServable {
     private let responder:       Responder
     private let eventNotifier:   EventNotifier
     private let threadPoolQueue: AsyncQueueType<SwiftThreadFunc>
-    private let procKeeper = ProcessorKeeper()
+    private let procKeeper     = ProcessorKeeper()
+    private let mutex          = PosixMutex()
     
     init(tcpListener:   ServerType,
          parser:        HttpRequestParsable = HttpRequestParser(),
@@ -52,9 +53,16 @@ class HttpServer : HttpServable {
     func serve() throws {
         print("process SingleSocket")
         while(true){
-            print("waiting..")
+            let n = sync{
+                busy.reduce(0) { (a,h) in
+                    a + h.value
+                }
+            }
+            
+            print("waiting..\(n)")
             try eventNotifier.wait { socket in
-//                try self.eventNotifier.disable(socket: socket)
+                try self.eventNotifier.clear(socket: socket)
+                print("starting..\(n)")
                 self.doAcceptOrRead(socket: socket)
             }
         }
@@ -67,7 +75,7 @@ class HttpServer : HttpServable {
             } else {
                 try self.eventNotifier.disable(socket: socket)
                 guard let p = procKeeper.get(socket: socket) else {
-                    print("socket already closed.")
+                    print("socket already closed. socket = <\(socket)>")
                     procKeeper.delete(socket: socket)
                     return
                 }
@@ -80,25 +88,41 @@ class HttpServer : HttpServable {
     }
     
     private func accept() throws {
+        try sync(mutex: mutex) {
         let client = try self.tcpListener.accept()
-        print("accept and event add")
+        print("accept socket = <\(client.getSocket())>")
+
+//        let fl = fcntl(client.getSocket(), F_GETFL)
+//        fcntl(client.getSocket(), fl|O_NONBLOCK)
+//        
         let p = HttpProcessor(httpServer: self, stream: client, middleware: self.middleware,callBack: self.responder)
-        procKeeper.add(socket: client.getSocket(), processor: p)
+        if let op = self.procKeeper.get(socket: client.getSocket()) {
+            print("same processor is exist socket = <\(client.getSocket())>")
+            op.isZombie = true
+        }
+        
+        self.procKeeper.add(socket: client.getSocket(), processor: p)
         try self.eventNotifier.add(socket: client.getSocket())
+        try self.eventNotifier.enable(socket: client.getSocket())
+        }
     }
     
     private func readAndResponse(processor: HttpProcessor) throws {
         try self.threadPoolQueue.put {
             do {
                 try processor.doProcessLoop()
-                if processor.stream.closed {
-                    self.procKeeper.delete(socket: processor.stream.getSocket())
-                } else {
-                    try self.eventNotifier.enable(socket: processor.stream.getSocket())
+                try sync(mutex: self.mutex) {
+                    if processor.stream.closed && !processor.isZombie {
+                        print("stream closed by self. socket = <\(processor.stream.getSocket())> \(#file) \(#line)")
+                        self.procKeeper.delete(socket: processor.stream.getSocket())
+                    } else {
+                        try self.eventNotifier.enable(socket: processor.stream.getSocket())
+                    }
                 }
             } catch NotifyError.errno(let errno) {
                 print("exception in thread1 : \(errno)") //TODO
             } catch StreamError.closedStream(_) {
+                print("stream closed by peer. socket = <\(processor.stream.getSocket())> \(#file) \(#line)")
                 self.procKeeper.delete(socket: processor.stream.getSocket())
             } catch (Error.errno(let errno) ){
                 print("exception in thread1. errno = \(errno)") //TODO
@@ -118,7 +142,7 @@ class HttpServer : HttpServable {
         let callBack:   Responder
         let stream:     HandledStream
         let readBuffer: ReadBuffer
-        
+        var isZombie  = false
 
         init(httpServer: HttpServer, stream: HandledStream, middleware: [Middleware], callBack: Responder) {
             self.httpServer = httpServer
@@ -134,13 +158,21 @@ class HttpServer : HttpServable {
         }
         
         func doProcessLoop() throws {
+            print("doProcess start socket = <\(self.stream.getSocket())>")
+//            print("sleep start")
+//            sleep(10)
+//            print("sleep end")
+//            
+            if(isZombie){
+                return
+            }
             let data = try self.stream.receive(upTo:TcpData.DEFAULT_BUFFER_SIZE)
             
             print("lenbytes = \(data.bytes.count)")
             
             guard data.bytes.count != 0 else {
+                print("close stream 1 socket = <\(self.stream.getSocket())>")
                 try self.stream.close()
-                print("tcp close2")
                 return
             }
             
@@ -150,15 +182,20 @@ class HttpServer : HttpServable {
 
             self.httpServer.parser.parse(readBuffer: self.readBuffer, readData: data) { [unowned self] request in
                 let response = try self.middleware.chain(to: self.callBack).respond(to: request)
+                    print("return response")
+                    if(self.isZombie){
+                        return
+                    }
                     self.serialize(response: response)
                 
                     if let didUpgrade = response.didUpgrade {
                         try didUpgrade(request, self.stream)
-                        print("close strem")
+                        print("close stream 2 socket = <\(self.stream.getSocket())>")
                         try self.stream.close()
                     }
                 
                 if !request.isKeepAlive {
+                    print("close stream 3 socket = <\(self.stream.getSocket())>")
                     try self.stream.close()
                 }
                 
@@ -166,6 +203,7 @@ class HttpServer : HttpServable {
         }
         
         private func errorRespond(error: ErrorProtocol){
+            print("error respond")
             if let response = self.httpServer.errorCallBack(error: error) {
                 self.serialize(response: response)
             }
@@ -174,8 +212,9 @@ class HttpServer : HttpServable {
         private func serialize(response: Response){
             do {
                 try self.httpServer.serializer.serialize(response: response, stream: self.stream)
-            } catch {
-                print("serialize error.") // TODO
+            } catch (let error ){
+                print("serialize error. \(error.dynamicType)") // TODO
+                print("close stream 4 socket = <\(self.stream.getSocket())>")
             }
         }
     }

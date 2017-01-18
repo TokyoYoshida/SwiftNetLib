@@ -1,4 +1,4 @@
-
+var busy = [Int:Int]()
 class ThreadPoolConsumer {
     var queue: AsyncQueueType<SwiftThreadFunc>
     var threads = ThreadUnitContainer()
@@ -7,7 +7,7 @@ class ThreadPoolConsumer {
         self.queue = queue
     }
     
-    func run() {
+    func run(i: Int) {
         while(true){
             guard let queueFunc = try? queue.get() else {
                 break
@@ -16,14 +16,19 @@ class ThreadPoolConsumer {
                 break
                 // TODO : This block passes when queue throws an exception. Therefore we need to add exception handling.
             }
+            sync { busy[i] = 1 }
+            print("thread start \(i)")
             threadFunc()
+            print("thread end \(i)")
+            sync { busy[i] = 0 }
+            
         }
     }
 
     func makePoolThreads(numOfThreads: Int) throws {
-        try [Int](0..<numOfThreads).forEach { _ in
+        try [Int](0..<numOfThreads).forEach { i in
             try threads.add {
-                self.run()
+                self.run(i:i)
             }
         }
     }

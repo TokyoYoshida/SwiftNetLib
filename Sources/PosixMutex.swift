@@ -29,14 +29,14 @@ public class PosixMutex {
 }
 
 private let globalMutex = PosixMutex()
-public func sync<A>(mutex: PosixMutex = globalMutex,  syncFunc:  () -> A) -> A {
+public func sync<A>(mutex: PosixMutex = globalMutex,  syncFunc:  () throws -> A) rethrows -> A {
     mutex.lock()
     
     defer {
         mutex.unlock()
     }
     
-    let retValue = syncFunc()
+    let retValue = try syncFunc()
     
     return retValue
 }

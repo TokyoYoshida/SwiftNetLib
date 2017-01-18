@@ -29,14 +29,15 @@ func httpServer() -> Int32
 
     do {
 
-        let queue = LockFreeAsyncQueue<SwiftThreadFunc>()
-//        let queue = AsyncQueue<SwiftThreadFunc>(size: 100)
+        //        let queue = LockFreeAsyncQueue<SwiftThreadFunc>()
+        let queue = AsyncQueue<SwiftThreadFunc>(size: 10)
         
         let consumer = ThreadPoolConsumer(queue: queue)
         try! consumer.makePoolThreads(numOfThreads:7)
 
         let tcpServer = try TcpServer.tcpListen(port:5189)
         let tlsServer = try TlsServer(server: tcpServer, certificate:"/tmp/ssl/cert.pem", privateKey: "/tmp/ssl/server.key" )
+
         let errorCallBack:ErrorCallBack = { error in
             return Response(body: Data("error page."))
         }
@@ -93,7 +94,7 @@ func httpServer() -> Int32
 
         server2.use(add_middleware: MyMiddleware())
         
-        server2.use(add_middleware:wsServer)
+//        server2.use(add_middleware:wsServer)
 
         try queue.put {
             do {

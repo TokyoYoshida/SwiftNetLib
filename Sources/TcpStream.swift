@@ -23,7 +23,9 @@ public class TcpStream : HandledStream {
         return tcpData.data
     }
     
-    public func flush(timingOut deadline: Double) throws {} // Todo
+    public func flush(timingOut deadline: Double) throws {
+        // Do Nothing
+    }
 
     public func close() throws {
         try client.tcpClose()

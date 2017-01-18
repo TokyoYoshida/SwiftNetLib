@@ -6,6 +6,11 @@
 
 import C7
 
+public enum TcpClientError: ErrorProtocol {
+    case errno(errorNo: Int32)
+}
+
+
 public class TcpClient : SocketHandler{
     private  var socketfd: Int32
     internal var closed:   Bool    = true // TODO avoid state management
@@ -24,7 +29,12 @@ public class TcpClient : SocketHandler{
         if (socketfd < 0) {
             throw Error.errno(errorNo: errno)
         }
-
+        
+//        var flag = 1;
+//        if setsockopt( socketfd, IPPROTO_TCP, TCP_NODELAY, &flag, UInt32(sizeofValue(flag)) ) == -1 {
+//            throw Error.errno(errorNo: errno)
+//        }
+//        
         var serveraddr             = sockaddr_in()
         serveraddr.sin_family      = UInt8(AF_INET)
         serveraddr.sin_port        = UInt16(bigEndian: port)
@@ -33,7 +43,7 @@ public class TcpClient : SocketHandler{
 
         ret = connect(socketfd, serverPointer, UInt32(sizeofValue(serveraddr)))
         if (ret < 0) {
-            throw Error.errno(errorNo: errno)
+            throw TcpClientError.errno(errorNo: errno)
         }
  
         print("client open")
@@ -47,13 +57,14 @@ public class TcpClient : SocketHandler{
 
     public func tcpRead() throws -> TcpData? {
         let recvbuf = TcpData()
-        let size = read(self.socketfd, recvbuf.pointer ,recvbuf.lenBytes)
+        let size = recv(self.socketfd, recvbuf.pointer ,recvbuf.lenBytes, 0)
         
         guard size != -1 else {
-            throw Error.errno(errorNo: errno)
+            throw TcpClientError.errno(errorNo: errno)
         }
 
         guard size != 0 else {
+            print("socket closed because read size is zero. socket = <\(socketfd)> ,errno = \(errno)\(#file) \(#line)")
             closed = true
             return nil
         }
@@ -65,7 +76,7 @@ public class TcpClient : SocketHandler{
         let size = write(socketfd, sendbuf.pointer, sendbuf.lenBytes)
 
         guard size != -1 else {
-            throw Error.errno(errorNo: errno)
+            throw TcpClientError.errno(errorNo: errno)
         }
 
         return size
@@ -75,20 +86,20 @@ public class TcpClient : SocketHandler{
         guard sendbuf.bytes.count != 0 else {
             return 0
         }
-        let size = write(socketfd, UnsafeMutablePointer(sendbuf.bytes), sendbuf.bytes.count * sizeofValue(sendbuf.bytes[0]))
+        let size = send(socketfd, UnsafeMutablePointer(sendbuf.bytes), sendbuf.bytes.count * sizeofValue(sendbuf.bytes[0]), 0)
         
         guard size != -1 else {
-            throw Error.errno(errorNo: errno)
+            throw TcpClientError.errno(errorNo: errno)
         }
         
         return size
     }
 
     public func tcpClose() throws {
-        guard close(socketfd) != -1 else {
-            throw Error.errno(errorNo: errno)
-        }
         closed = true
+        guard close(socketfd) != -1 else {
+            throw TcpClientError.errno(errorNo: errno)
+        }
     }
     
     public func getSocket() -> Int32 {
