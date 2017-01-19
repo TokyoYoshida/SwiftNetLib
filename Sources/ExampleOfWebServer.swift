@@ -74,9 +74,6 @@ func httpServer() -> Int32
             print("wss num :\(wss.all.count)")
         }
 
-        print("st1")
-
-
         let tcpServer2 = try TcpServer.tcpListen()
         
         let kqueue2 = try! Kqueue(maxEvents:100)
@@ -90,11 +87,8 @@ func httpServer() -> Int32
             threadPoolQueue: queue
         )
         
-        print("st2")
-
         server2.use(add_middleware: MyMiddleware())
-        
-//        server2.use(add_middleware:wsServer)
+        server2.use(add_middleware: wsServer)
 
         try queue.put {
             do {
@@ -103,7 +97,8 @@ func httpServer() -> Int32
                 print("error server1")
             }
         }
-        
+
+        print("listening..")
         try server2.serve()
         print("error file : \(#file) line : \(#line)")
     } catch (let err){

@@ -15,7 +15,7 @@ public class TcpServer : ServerType  {
     public init(host: String, port: UInt16) throws {
         listenfd = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)
         if (listenfd < 0) {
-            print("error1")
+            throw Error.errno(errorNo: errno)
         }
         
         var serveraddr = sockaddr_in()
@@ -45,7 +45,7 @@ public class TcpServer : ServerType  {
         return try TcpServer(host: host, port: port)
     }
     
-    public func tcpAccept() -> TcpClient {
+    public func tcpAccept() throws -> TcpClient {
         var connectfd:Int32
         var peeraddr = sockaddr_in()
         var peeraddr_len = socklen_t(sizeofValue(peeraddr))
@@ -53,11 +53,13 @@ public class TcpServer : ServerType  {
 
         connectfd = os_accept(listenfd, peerPointer, &peeraddr_len)
         if (connectfd < 0) {
-            print("error5")
+            throw Error.errno(errorNo: errno)
         }
         
-        print("ip address: \(inet_ntoa(peeraddr.sin_addr)), port: \(peeraddr.sin_port)\n")
-        
+        if let addr =  String(validatingUTF8: inet_ntoa(peeraddr.sin_addr)) {
+            print("accept : \(addr):\(peeraddr.sin_port)\n")
+        }
+
         return TcpClient(socketfd: connectfd)
     }
     
@@ -78,7 +80,8 @@ public class TcpServer : ServerType  {
         }
     }
 
-    public func accept() throws -> HandledStream {         return TcpStream(client: tcpAccept())
+    public func accept() throws -> HandledStream {
+        return TcpStream(client: try tcpAccept())
     }
     
     public func createStream(socket: Int32) -> HandledStream {

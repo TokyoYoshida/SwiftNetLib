@@ -87,7 +87,7 @@ class LockFreeAsyncQueue<T>: AsyncQueueType<T> {
             let lastp = self.tail
             let nextp = last.next
             
-            print("put block")
+
 
             if(closed) {
                 throw AsyncQueueError.closedException
@@ -104,7 +104,7 @@ class LockFreeAsyncQueue<T>: AsyncQueueType<T> {
             if nextp == nil {
                 if compareAndSwap(oldp: nextp, newp: newenthp, targetp: &last.next) {
                     compareAndSwap(oldp: lastp, newp: newenthp, targetp: &self.tail )
-                    print("change")
+
                     return
                 }
             } else {

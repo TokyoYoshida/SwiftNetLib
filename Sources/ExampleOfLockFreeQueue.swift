@@ -7,13 +7,13 @@
 func lockFreeQueue() -> Int32
 {
     
-//     Example Of Simple Queue
+
     let q = LockFreeAsyncQueue<Int>()
-//    do {
-//    try q.get()
-//    }catch{
-//        print("error file : \(#file) line : \(#line)")
-//    }
+
+
+
+
+
     do {
         try q.put(obj: 1)
         try q.put(obj: 2)

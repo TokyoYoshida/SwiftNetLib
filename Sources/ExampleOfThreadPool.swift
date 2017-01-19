@@ -6,12 +6,12 @@
 
 func threadPool() -> Int32
 {
-//    let queue = AsyncQueue<Int>(size:100)
-//
-//    try! queue.put(obj:1)
-//    
-//    print("queue ok")
-//    print(try! queue.get())
+
+
+
+
+
+
     let queue = AsyncQueue<SwiftThreadFunc>(size:10)
     let consumer = ThreadPoolConsumer(queue: queue)
     try! consumer.makePoolThreads(numOfThreads:7)

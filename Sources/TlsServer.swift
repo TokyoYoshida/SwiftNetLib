@@ -7,7 +7,7 @@ import OpenSSL
 
 
 public class TlsServer : ServerType  {
-//    private var listenfd: Int32
+
     let server: ServerType
     let sslContext: SSLServerContext
     

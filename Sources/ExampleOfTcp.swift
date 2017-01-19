@@ -35,7 +35,7 @@ func tcpLibServer() -> Int32
     
     let server = try! TcpServer.tcpListen()
     
-    let client = server.tcpAccept()
+    let client = try! server.tcpAccept()
     
     while(true) {
         guard let recvbuf = try! client.tcpRead() else {

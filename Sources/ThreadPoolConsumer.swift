@@ -1,4 +1,3 @@
-var busy = [Int:Int]()
 class ThreadPoolConsumer {
     var queue: AsyncQueueType<SwiftThreadFunc>
     var threads = ThreadUnitContainer()
@@ -16,11 +15,11 @@ class ThreadPoolConsumer {
                 break
                 // TODO : This block passes when queue throws an exception. Therefore we need to add exception handling.
             }
-            sync { busy[i] = 1 }
-            print("thread start \(i)")
+
+
             threadFunc()
-            print("thread end \(i)")
-            sync { busy[i] = 0 }
+
+
             
         }
     }

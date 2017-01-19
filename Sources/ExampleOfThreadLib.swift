@@ -17,35 +17,25 @@ func threadLib() -> Int32
             let thread3 = try! Thread.new {
                 
                 print("this is thread3.")
-                
                 print("thread3 end.")
             }
             
             print("thread3 join.")
-            
             try! thread3.join()
-            
             print("thread1 end.")
         }
         try! thread1.join()
     }
-    
-//    semaphore2.wait()
-    
 
     print("thread2 kick.")
     
     let thread2 = try! Thread.new {
-        
         print("this is thread2.")
-        
-//        semaphore1.post()
     }
-    
 
     print("thread2 join.")
     try! thread2.join()
-//    pthread_exit(nil)
+
 
     return 0
 }
@@ -57,7 +47,7 @@ func threadServerLib() -> Int32{
         let server = try TcpServer.tcpListen()
         
         while(true){
-            let client = server.tcpAccept()
+            let client = try! server.tcpAccept()
             _ = try Thread.new {
                 while(true){
                     do {

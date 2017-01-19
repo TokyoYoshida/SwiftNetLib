@@ -30,11 +30,11 @@ public class TcpClient : SocketHandler{
             throw Error.errno(errorNo: errno)
         }
         
-//        var flag = 1;
-//        if setsockopt( socketfd, IPPROTO_TCP, TCP_NODELAY, &flag, UInt32(sizeofValue(flag)) ) == -1 {
-//            throw Error.errno(errorNo: errno)
-//        }
-//        
+
+
+
+
+
         var serveraddr             = sockaddr_in()
         serveraddr.sin_family      = UInt8(AF_INET)
         serveraddr.sin_port        = UInt16(bigEndian: port)
@@ -46,7 +46,7 @@ public class TcpClient : SocketHandler{
             throw TcpClientError.errno(errorNo: errno)
         }
  
-        print("client open")
+
         closed = false
     }
 
@@ -64,7 +64,7 @@ public class TcpClient : SocketHandler{
         }
 
         guard size != 0 else {
-            print("socket closed because read size is zero. socket = <\(socketfd)> ,errno = \(errno)\(#file) \(#line)")
+
             closed = true
             return nil
         }

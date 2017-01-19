@@ -4,15 +4,15 @@
     import Glibc
 #endif
 
-// TODO Since these signal processes have not been created yet, I made it temporarily.
+
 
 func signalHandler(sign: Int32){
-    print("Signal")
+    print("signal recieved.")
     // do nothing
     signal(SIGINT, signalHandler)
 }
 
 func setSignal() {
-//    signal(SIGINT, signalHandler)
+
     signal(SIGPIPE, SIG_IGN)
 }

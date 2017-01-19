@@ -18,7 +18,7 @@ public class ThreadUnit  {
 
     init(detachState: DetachState = .joinable, threadFunc: SwiftThreadFunc) throws {
 
-        print("thread init")
+
 
         try create(detachState: detachState, threadFunc: threadFunc)
 
@@ -68,9 +68,8 @@ public class ThreadUnit  {
         }
     }
 
-    deinit {
-        print("thread deinit")
-    }
+
+
 
     private func throwErrorIfFailed( targetClosure: ()->Int32) throws {
 
