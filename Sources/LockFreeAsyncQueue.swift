@@ -17,7 +17,6 @@ typealias UnsafeMutableRawPointer = UnsafeMutablePointer<Void>
 class ListEntry<T> : Equatable {
     var listHead = ListHead()
     var value:T?
-    let mutex = PosixMutex()
     
     init(_ value:T){
         self.value = value
@@ -85,8 +84,8 @@ class LockFreeAsyncQueue<T>: AsyncQueueType<T> {
         
         while(true){
             let last = self.tail!.pointee
-            let lastp = self.tail
-            let nextp = last.next
+            let lastp = self.tail!
+            let nextp = self.tail!.pointee.next
 
             if(closed) {
                 throw AsyncQueueError.closedException
@@ -115,10 +114,9 @@ class LockFreeAsyncQueue<T>: AsyncQueueType<T> {
     
     override func get() throws -> T?  {
         while(true){
-            let firstp = self.head
+            let firstp = self.head!
             let lastp = self.tail!
-            let first = firstp!.pointee
-            let nextp = first.next
+            let nextp = self.head!.pointee.next
             
             if(aborted) {
                 throw AsyncQueueError.abortedException
@@ -146,14 +144,7 @@ class LockFreeAsyncQueue<T>: AsyncQueueType<T> {
                 compareAndSwap(oldp: lastp, newp: nextp, targetp: &self.tail )
             } else {
                 if compareAndSwap(oldp: firstp, newp: nextp, targetp: &self.head ) {
-                    guard let fp = firstp else {
-                        return nil
-                    }
-                    let firstent = initEnt.get(from: fp ) as ListEntry<T>
-                    firstent.mutex.lock()
-                    defer {
-                        firstent.mutex.unlock()
-                    }
+                    let firstent = initEnt.get(from: firstp ) as ListEntry<T>
                     let nv = initEnt.get(from: firstent.listHead.next! ).value
                     _ = Unmanaged.passUnretained(firstent)
                     return nv
