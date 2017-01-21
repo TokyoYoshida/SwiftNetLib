@@ -17,11 +17,7 @@ public class ThreadUnit  {
     }
 
     init(detachState: DetachState = .joinable, threadFunc: SwiftThreadFunc) throws {
-
-
-
         try create(detachState: detachState, threadFunc: threadFunc)
-
     }
 
     private func create(detachState: DetachState,   threadFunc: SwiftThreadFunc) throws {
@@ -53,7 +49,7 @@ public class ThreadUnit  {
             return pthread_attr_setdetachstate(&threadAttr , PTHREAD_CREATE_JOINABLE)
         }
 
-        try throwErrorIfFailed {
+        try throwErrorIfFailed { [unowned self] in
             return pthread_create(&self.pthread, nil, thread_function, threadDataBag)
         }
 
@@ -63,13 +59,10 @@ public class ThreadUnit  {
     }
 
     public func join() throws {
-        try throwErrorIfFailed {
+        try throwErrorIfFailed { [unowned self] in
             return pthread_join(self.pthread!, nil)
         }
     }
-
-
-
 
     private func throwErrorIfFailed( targetClosure: ()->Int32) throws {
 

@@ -26,15 +26,15 @@ public class TcpServer : ServerType  {
         let serverPointer:UnsafePointer<sockaddr> = withUnsafePointer(&serveraddr) { UnsafePointer($0) }
         
         var on = 1
-        try throwErrorIfFailed {
+        try throwErrorIfFailed { [unowned self] in
             return setsockopt(self.listenfd, SOL_SOCKET, SO_REUSEADDR, &on, UInt32(sizeofValue(on)))
         }
         
-        try throwErrorIfFailed {
+        try throwErrorIfFailed { [unowned self] in
             return bind(self.listenfd, serverPointer, UInt32(sizeofValue(serveraddr)))
         }
 
-        try throwErrorIfFailed {
+        try throwErrorIfFailed { [unowned self] in 
             return listen(self.listenfd, SOMAXCONN)
         }
         

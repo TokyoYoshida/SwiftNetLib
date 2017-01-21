@@ -6,13 +6,7 @@
 
 func lockFreeQueue() -> Int32
 {
-    
-
     let q = LockFreeAsyncQueue<Int>()
-
-
-
-
 
     do {
         try q.put(obj: 1)

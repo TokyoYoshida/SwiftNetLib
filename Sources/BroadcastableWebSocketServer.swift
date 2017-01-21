@@ -7,7 +7,7 @@ public class WebSocketContainer {
     private let mutex = PosixMutex()
     
     public func add(_ websocket: WebSocket) -> Int{
-        return sync(mutex: mutex) {
+        return sync(mutex: mutex) { [unowned self] in
             let r = self.key
 
             self.all[self.key] = websocket

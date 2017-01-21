@@ -16,11 +16,7 @@ class ThreadPoolConsumer {
                 // TODO : This block passes when queue throws an exception. Therefore we need to add exception handling.
             }
 
-
             threadFunc()
-
-
-            
         }
     }
 

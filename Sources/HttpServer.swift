@@ -49,7 +49,7 @@ class HttpServer : HttpServable {
 
     func serve() throws {
         while(true){
-            try eventNotifier.wait { socket in
+            try eventNotifier.wait { [unowned self] socket in
                 try self.eventNotifier.clear(socket: socket)
                 self.doAcceptOrRead(socket: socket)
             }
@@ -88,18 +88,22 @@ class HttpServer : HttpServable {
     }
     
     private func readAndResponse(processor: HttpProcessor) throws {
-        try self.threadPoolQueue.put {
+        try self.threadPoolQueue.put { [unowned self] in
             do {
                 let keepThis = try processor.doProcessLoop()
                 if !keepThis {
-                    try! self.deleteAndclose(target: processor)
+                    try self.deleteAndclose(target: processor)
                 } else {
                     try self.eventNotifier.enable(socket: processor.stream.getSocket())
                 }
             } catch NotifyError.errno(let errno) {
                 print("exception in thread1 : \(errno)") //TODO
             } catch StreamError.closedStream(_) {
-                try! self.deleteAndclose(target: processor)
+                do {
+                    try self.deleteAndclose(target: processor)
+                } catch {
+                    print("close error")
+                }
             } catch (Error.errno(let errno) ){
                 print("exception in thread1. errno = \(errno)") //TODO
             } catch (let err){
@@ -141,7 +145,6 @@ class HttpServer : HttpServable {
             guard data.bytes.count != 0 else {
                 return false
             }
-            
 
             self.httpServer.parser.parse(readBuffer: self.readBuffer, readData: data) { [unowned self] request in
                 let response = try self.middleware.chain(to: self.callBack).respond(to: request)
@@ -185,19 +188,19 @@ class HttpServer : HttpServable {
         var processors = [Int32:HttpProcessor]()
         
         func add(socket: Int32, processor: HttpProcessor){
-            sync(mutex: mutex){
+            sync(mutex: mutex){ [unowned self] in
                 self.processors[socket] = processor
             }
         }
         
         func delete(socket: Int32){
-            sync(mutex: mutex){
+            sync(mutex: mutex){ [unowned self] in
                 self.processors[socket] = nil
             }
         }
 
         func get(socket: Int32) -> HttpProcessor? {
-            return sync(mutex: mutex){
+            return sync(mutex: mutex){ [unowned self] in
                 return self.processors[socket]
             }
         }

@@ -60,7 +60,7 @@ public class EventNotifier {
 
     func serverLoopExample() throws {
         while(true){
-            try eventManager.wait { sock in
+            try eventManager.wait { [unowned self] sock in
                 if ( sock == self.server.getSocket() ){
                     let client = try self.server.accept()
                     

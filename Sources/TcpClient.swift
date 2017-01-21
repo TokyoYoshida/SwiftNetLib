@@ -29,11 +29,6 @@ public class TcpClient : SocketHandler{
         if (socketfd < 0) {
             throw Error.errno(errorNo: errno)
         }
-        
-
-
-
-
 
         var serveraddr             = sockaddr_in()
         serveraddr.sin_family      = UInt8(AF_INET)
