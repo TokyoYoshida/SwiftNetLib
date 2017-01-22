@@ -52,13 +52,16 @@ func server() -> Int32
 	print("ip address: \(inet_ntoa(peeraddr.sin_addr)), port: \(peeraddr.sin_port)\n")
 
     var recbuf:[CChar] = [CChar](repeating: 0, count: 1024)
-	while(true) {
+
+    var i = 0
+    while(i < 10000) {
 		memset(UnsafeMutablePointer(recbuf), 0, sizeofValue(recbuf[0]) * recbuf.count)
 		let len = read(connectfd, UnsafeMutablePointer(recbuf), sizeofValue(recbuf[0]) * recbuf.count)
         if let str = String(validatingUTF8: recbuf) {
             print(str)
         }
 		write(connectfd, recbuf, len)
+        i += 1
 	}
 
 	close(listenfd)

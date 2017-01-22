@@ -13,7 +13,7 @@ func unsafeFromVoidPointer<A>(x: UnsafeMutablePointer<Void>?) -> A? {
     guard let x = x else {
         return nil
     }
-    return Unmanaged<Box<A>>.fromOpaque(OpaquePointer(x)).takeUnretainedValue().value
+    return Unmanaged<Box<A>>.fromOpaque(x).takeUnretainedValue().value
 }
 
 func releaseRetainedPointer<A>(x: A?) -> Void {
@@ -31,7 +31,7 @@ func retainedVoidPointer<A>(x: A?) -> UnsafeMutablePointer<Void> {
         return UnsafeMutablePointer<Void>(allocatingCapacity: 0)
     }
     
-    let unmanaged = OpaquePointer(bitPattern: Unmanaged.passRetained(Box(value)))
+    let unmanaged = Unmanaged.passRetained(Box(value)).toOpaque()
     
     return UnsafeMutablePointer(unmanaged)
 }
@@ -41,7 +41,7 @@ func retainedVoidPointerFunc(x: PosixThreadFunc?) -> UnsafeMutablePointer<PosixT
         return UnsafeMutablePointer<PosixThreadFunc>(allocatingCapacity: 0)
     }
     
-    let unmanaged = OpaquePointer(bitPattern: Unmanaged.passRetained(Box(value)))
+    let unmanaged = Unmanaged.passRetained(Box(value)).toOpaque()
     
     return UnsafeMutablePointer(unmanaged)
 }

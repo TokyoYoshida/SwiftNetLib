@@ -3,15 +3,7 @@ enum AsyncQueueError : ErrorProtocol {
     case abortedException
 }
 
-protocol AsyncQueueTypeBase {
-    associatedtype BT
-    func put(obj: BT) throws
-    func get() throws -> BT?
-    func close()
-    func abort()
-}
-
-class  AsyncQueueType<T> : AsyncQueueTypeBase{
+class  AsyncQueueType<T> {
     typealias BT = T
 
     func put(obj: BT) throws {
@@ -19,6 +11,7 @@ class  AsyncQueueType<T> : AsyncQueueTypeBase{
     }
     func get() throws -> BT? {
         assert(false, "This block is expected to be not called.")
+        return nil
     }
     func close() {
         assert(false, "This block is expected to be not called.")

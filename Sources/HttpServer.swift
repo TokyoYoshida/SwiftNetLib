@@ -78,9 +78,8 @@ class HttpServer : HttpServable {
         let client = try self.tcpListener.accept()
 
         let p = HttpProcessor(httpServer: self, stream: client, middleware: self.middleware,callBack: self.responder)
-        if self.procKeeper.get(socket: client.getSocket()) != nil {
-            assert(false, "same processor is exist socket = <\(client.getSocket())>")
-        }
+        assert(self.procKeeper.get(socket: client.getSocket()) == nil,
+            "same processor is exist socket = <\(client.getSocket())>")
         
         self.procKeeper.add(socket: client.getSocket(), processor: p)
         try self.eventNotifier.add(socket: client.getSocket())
